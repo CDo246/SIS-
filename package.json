@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "workspaces": ["src/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "private": true,
-  "scripts": {"client": "cd src/client && yarn"},
+  "scripts": {
+    "client": "cd packages/client && yarn",
+    "server": "cd packages/server && yarn"
+  },
   "dependencies": {
     "typescript": "^5.2.2"
   }
