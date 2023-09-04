@@ -53,10 +53,11 @@ button {
 }
 button:hover {
   border-color: #646cff;
+  outline-width: 10px;
 }
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: 8px auto -webkit-focus-ring-color;
 }
 
 @media (prefers-color-scheme: light) {

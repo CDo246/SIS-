@@ -2,28 +2,25 @@ import { useState } from "react";
 import { trpc } from "../utils/trpc";
 
 export function MainPage() {
-  const [count, setCount] = useState(0);
+
 
   const hello = trpc.greeting.useQuery();
 
   return (
     <>
+
       <div>
         <a href="https://vitejs.dev" target="_blank"></a>
         <a href="https://react.dev" target="_blank"></a>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <body>
+
+
+        <div id="footer" >
+          <button>Publish</button>
+          <textarea name="Enter Topic" rows={2} cols={50} placeholder="Enter Topic Here...."></textarea>
+        </div>
+      </body>
       <p>{hello.data}</p>
     </>
   );
