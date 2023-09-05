@@ -10,6 +10,7 @@
   -webkit-text-size-adjust: 100%;
 }
 
+<<<<<<< HEAD
 a {
   font-weight: 500;
   color: #646cff;
@@ -88,3 +89,10 @@ textarea {
   box-sizing: border-box;
   padding: 2%;
 }
+=======
+/* Set height and scrolling for the chat container */
+.chat-container {
+  height: 80vh; /* Adjust height depending on rest of page */
+  overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
+}
+>>>>>>> a526d85 (added initial chat display)
