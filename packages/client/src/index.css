@@ -9,3 +9,9 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+
+/* Set height and scrolling for the chat container */
+.chat-container {
+  height: 80vh; /* Adjust height depending on rest of page */
+  overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
+}

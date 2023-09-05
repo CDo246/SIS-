@@ -1,30 +1,42 @@
 import { useState } from "react";
 import { trpc } from "../utils/trpc";
+import '../index.css';
 
 export function MainPage() {
+  const [messages, setMessages] = useState<string[]>([]);
+  const [message, setMessage] = useState<string>('');
+
+  const handleSend = () => {
+    if (message.trim() !== '') {
+        setMessages([...messages, message]);
+        setMessage('');
+    }
+};
   const [count, setCount] = useState(0);
 
   const hello = trpc.greeting.useQuery();
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank"></a>
-        <a href="https://react.dev" target="_blank"></a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs bg-red-600">
-        Click on the Vite and React logos to learn more
-      </p>
-      <p>{hello.data}</p>
-    </>
+    <div className="container mx-auto p-4">
+            <div className="border rounded-lg p-4 shadow-md chat-container">
+                {messages.map((msg, index) => (
+                    <div key={index} className="mb-2">{msg}</div>
+                ))}
+            </div>
+            <div className="mt-4">
+                <input
+                    type="text"
+                    className="w-full p-2 rounded-lg border"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                />
+                <button
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg ml-2"
+                    onClick={handleSend}
+                >
+                    Send
+                </button>
+            </div>
+        </div>
   );
 }
