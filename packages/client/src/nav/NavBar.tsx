@@ -18,7 +18,7 @@ const navigation = [
       <MagnifyingGlassIcon
         className="block h-10 w-10"
         aria-hidden="true"
-        title="Search"
+        title="Explore"
       />
     ),
     current: false,
@@ -70,6 +70,7 @@ export function NavBar() {
                 </Disclosure.Button>
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch">
+                {/* Logo and links */}
                 <a
                   className="flex flex-shrink-0 items-center sm:mr-auto"
                   href="/"
@@ -113,7 +114,7 @@ export function NavBar() {
                         className="h-10 w-10 rounded-full"
                         title="My Account"
                       />
-                      <span>My Account</span>
+                      <span className="hidden md:flex">My Account</span>
                     </Menu.Button>
                   </div>
                   <Transition
@@ -183,10 +184,11 @@ export function NavBar() {
                     item.current
                       ? "bg-gray-900 text-white"
                       : "text-black hover:bg-gray-700 hover:text-white",
-                    "block rounded-md px-3 py-2 text-base font-medium"
+                    "flex items-center justify-center block rounded-md px-3 py-2 text-base font-medium"
                   )}
                   aria-current={item.current ? "page" : undefined}
                 >
+                  <div className={item.src ? "pr-2" : ""}>{item.src}</div>
                   {item.name}
                 </Disclosure.Button>
               ))}
