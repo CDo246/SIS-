@@ -70,10 +70,15 @@ export function NavBar() {
                 </Disclosure.Button>
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch">
-                <div className="flex flex-shrink-0 items-center sm:mr-auto">
-                  <ChatBubbleLeftRightIcon className="w-10 h-10 mr-1" />
-                  <h1 className="font-bold text-3xl">{SITE_NAME}</h1>
-                </div>
+                <a
+                  className="flex flex-shrink-0 items-center sm:mr-auto"
+                  href="/"
+                >
+                  <div className="flex flex-shrink-0 items-center sm:mr-auto">
+                    <ChatBubbleLeftRightIcon className="w-10 h-10 mr-1" />
+                    <h1 className="font-bold text-3xl">{SITE_NAME}</h1>
+                  </div>
+                </a>
                 <div className="hidden sm:inline flex">
                   <div className="space-x-4 flex grow sm:ml-auto">
                     {navigation.map((item) => (
