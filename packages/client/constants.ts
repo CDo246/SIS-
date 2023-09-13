@@ -1,1 +1,1 @@
-export const SITE_NAME = "DeBot"
+export const SITE_NAME = "DeBot";

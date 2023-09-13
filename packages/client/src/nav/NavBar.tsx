@@ -90,7 +90,7 @@ export function NavBar() {
                           item.current
                             ? "bg-gray-900 text-white"
                             : "text-black hover:bg-gray-700",
-                          "flex items-center h-10 rounded-md px-3 text-lg font-medium hover:text-white hover:shadow-xl"
+                          "flex items-center h-10 rounded-md px-3 text-lg font-medium hover:text-white hover:shadow-xl",
                         )}
                         aria-current={item.current ? "page" : undefined}
                       >
@@ -133,7 +133,7 @@ export function NavBar() {
                             href="#"
                             className={classNames(
                               active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
+                              "block px-4 py-2 text-sm text-gray-700",
                             )}
                           >
                             Saved Debates
@@ -146,7 +146,7 @@ export function NavBar() {
                             href="#"
                             className={classNames(
                               active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
+                              "block px-4 py-2 text-sm text-gray-700",
                             )}
                           >
                             Settings
@@ -159,7 +159,7 @@ export function NavBar() {
                             href="#"
                             className={classNames(
                               active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
+                              "block px-4 py-2 text-sm text-gray-700",
                             )}
                           >
                             Log out
@@ -184,7 +184,7 @@ export function NavBar() {
                     item.current
                       ? "bg-gray-900 text-white"
                       : "text-black hover:bg-gray-700 hover:text-white",
-                    "flex items-center justify-center block rounded-md px-3 py-2 text-base font-medium"
+                    "flex items-center justify-center block rounded-md px-3 py-2 text-base font-medium",
                   )}
                   aria-current={item.current ? "page" : undefined}
                 >
