@@ -64,6 +64,7 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+<<<<<<< HEAD
 
 #footer {
   align-items:baseline;
@@ -90,3 +91,5 @@ textarea{
   box-sizing: border-box;
   padding: 2%;
 }
+=======
+>>>>>>> acc6622e074476cf21fdc4832de418315d4a444f
