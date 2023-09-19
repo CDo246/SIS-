@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { MainPage } from "./pages/MainPage";
+import { NavBar } from "./nav/NavBar.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { trpc } from "./utils/trpc";
 import { httpBatchLink } from "@trpc/client";
@@ -17,12 +18,13 @@ function App() {
           },
         }),
       ],
-    })
+    }),
   );
 
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
+        <NavBar />
         <MainPage />
       </QueryClientProvider>
     </trpc.Provider>

@@ -11,20 +11,20 @@ export function MainPage() {
 
   const [messages, setMessages] = useState<{ text: string; isRight: boolean; avatarUrl: string }[]>([]);
   const [message, setMessage] = useState<string>('');
+  const hello = trpc.greeting.useQuery();
 
   const handleSend = () => {
     if (message.trim() !== '') {
-      //console.log('message:', message); // debug message text
       const newMessage = { 
         text: message, 
         isRight: messages.length % 2 === 0,
         avatarUrl: messages.length % 2 === 0 ? rightAvatarUrl : leftAvatarUrl, }; // Checking whether message is sent by right or left bot
-      //console.log('newmessage:', newMessage); // debug new message text
       setMessages([...messages, newMessage]);
       setMessage('');
     }
 };
   return (
+    <>
     <div className="container mx-auto p-4">
       <div className="border rounded-lg p-4 shadow-md chat-container">
         {messages.map((msg, index) => (
@@ -40,7 +40,8 @@ export function MainPage() {
               />
             )}
             <div className={`${msg.isRight ? 'text-right' : 'text-left'}`}>
-              <div className={`${msg.isRight ? 'bg-blue-100' : 'bg-gray-100'} p-2 rounded-lg inline-block`} style={{ maxWidth: '45%' }}>
+
+              <div className={`${msg.isRight ? 'bg-blue-100' : 'bg-gray-100'} p-2 rounded-lg inline-block`} style={{ maxWidth: '50%' }}>
                 <TypingText text={msg.text} speed={35} /> {/* Speed can be adjusted to be faster/slower if needed - lower number is faster*/}
               </div>
             </div>
@@ -68,6 +69,20 @@ export function MainPage() {
           Send
         </button>
       </div>
+
     </div>
+    <body>
+        <div id="footer">
+          <button>Publish</button>
+          <textarea
+            name="Enter Topic"
+            placeholder="Enter Topic Here...."
+          ></textarea>
+        </div>
+      </body>
+
+      <p>{hello.data}</p>
+
+    </>
   );
 }
