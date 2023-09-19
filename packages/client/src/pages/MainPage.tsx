@@ -40,8 +40,8 @@ export function MainPage() {
               />
             )}
             <div className={`${msg.isRight ? 'text-right' : 'text-left'}`}>
-              <div className={`${msg.isRight ? 'bg-blue-100' : 'bg-gray-100'} p-2 rounded-lg inline-block`}>
-                <TypingText text={msg.text} speed={50} /> {/* Speed can be adjusted to be faster/slower if needed */}
+              <div className={`${msg.isRight ? 'bg-blue-100' : 'bg-gray-100'} p-2 rounded-lg inline-block`} style={{ maxWidth: '45%' }}>
+                <TypingText text={msg.text} speed={35} /> {/* Speed can be adjusted to be faster/slower if needed - lower number is faster*/}
               </div>
             </div>
             {msg.isRight && (
