@@ -5,8 +5,6 @@ import { appRouter } from "./api/router";
 import cors from "cors";
 import path from "path";
 
-
-
 // created for each request
 const createContext = ({
   req,

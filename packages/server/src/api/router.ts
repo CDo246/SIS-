@@ -12,7 +12,7 @@ export const appRouter = router({
 export type AppRouter = typeof appRouter;
 
 const openai = new OpenAI({
-  apiKey: openaiKey
+  apiKey: openaiKey,
 });
 
 type Side = "for" | "against";
@@ -69,7 +69,7 @@ You MUST adhere to your debate role in every message
 
 async function generateNextMessage(
   params: ArgumentParams,
-  messages: DebateMessage[]
+  messages: DebateMessage[],
 ): Promise<DebateMessage> {
   const isInitialSide = messages.length % 2 == 0;
 
@@ -85,18 +85,16 @@ async function generateNextMessage(
     otherRole: isInitialSide ? params.role2 : params.role1,
   });
 
-  const aiMessages = messages.map<ChatCompletionMessageParam>(
-    (message, i) => {
-      const isInitialSide = i % 2 == 0;
-      const messageSide = isInitialSide
-        ? params.startingSide
-        : flipSide(params.startingSide);
-      return {
-        role: messageSide == side ? "assistant" : "user",
-        content: `${message.thinking}\n\n---\n\n${message.message}`,
-      };
-    }
-  );
+  const aiMessages = messages.map<ChatCompletionMessageParam>((message, i) => {
+    const isInitialSide = i % 2 == 0;
+    const messageSide = isInitialSide
+      ? params.startingSide
+      : flipSide(params.startingSide);
+    return {
+      role: messageSide == side ? "assistant" : "user",
+      content: `${message.thinking}\n\n---\n\n${message.message}`,
+    };
+  });
 
   const openAIResponse = await openai.chat.completions.create({
     messages: [{ role: "system", content: sysMessage }, ...aiMessages],
@@ -118,7 +116,7 @@ async function generateNextMessage(
 }
 
 async function main() {
-  console.log("starting debate, please wait...")
+  console.log("starting debate, please wait...");
   const params: ArgumentParams = {
     role1: "philosopher",
     role2: "young child",

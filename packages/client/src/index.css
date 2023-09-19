@@ -64,20 +64,17 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
-<<<<<<< HEAD
 
 #footer {
-  align-items:baseline;
+  align-items: baseline;
   position: fixed;
   bottom: 0;
   box-sizing: border-box;
   left: 50%;
-  width:100%;
+  width: 100%;
   transform: translateX(-50%);
   position: fixed;
   bottom: 0;
-  
-
 }
 #footer button {
   background-color: rgb(39, 39, 124);
@@ -86,10 +83,8 @@ button:focus-visible {
   padding: 10px;
   color: #f9f9f9;
 }
-textarea{
+textarea {
   width: 80%;
   box-sizing: border-box;
   padding: 2%;
 }
-=======
->>>>>>> acc6622e074476cf21fdc4832de418315d4a444f
