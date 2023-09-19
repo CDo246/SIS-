@@ -9,7 +9,6 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
-<<<<<<< HEAD
 
 a {
   font-weight: 500;
@@ -65,5 +64,29 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
-=======
->>>>>>> 1546544716855bc03cf2b9cb88f44e9b39228467
+
+#footer {
+  align-items:baseline;
+  position: fixed;
+  bottom: 0;
+  box-sizing: border-box;
+  left: 50%;
+  width:100%;
+  transform: translateX(-50%);
+  position: fixed;
+  bottom: 0;
+  
+
+}
+#footer button {
+  background-color: rgb(39, 39, 124);
+  margin-bottom: 20px;
+  width: 7%;
+  padding: 10px;
+  color: #f9f9f9;
+}
+textarea{
+  width: 80%;
+  box-sizing: border-box;
+  padding: 2%;
+}
