@@ -14,8 +14,12 @@
   "dependencies": {
     "typescript": "^5.2.2"
   },
+<<<<<<< HEAD
+  "packageManager": "yarn@1.22.1"
+=======
   "packageManager": "yarn@1.22.19",
   "devDependencies": {
     "prettier": "^3.0.3"
   }
+>>>>>>> acc6622e074476cf21fdc4832de418315d4a444f
 }
