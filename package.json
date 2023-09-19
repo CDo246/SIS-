@@ -9,15 +9,9 @@
   "private": true,
   "scripts": {
     "client": "cd packages/client && yarn",
-    "server": "cd packages/server && yarn",
-    "lintcheck": "prettier --check .",
-    "lintfix": "prettier --write ."
+    "server": "cd packages/server && yarn"
   },
   "dependencies": {
     "typescript": "^5.2.2"
-  },
-  "packageManager": "yarn@1.22.19",
-  "devDependencies": {
-    "prettier": "^3.0.3"
   }
 }
