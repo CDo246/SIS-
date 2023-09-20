@@ -50,7 +50,7 @@ export function NavBar() {
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-            <div className="relative flex h-16 items-center justify-between">
+            <div className="relative flex h-16 justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
                 <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700">
@@ -69,10 +69,10 @@ export function NavBar() {
                   )}
                 </Disclosure.Button>
               </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch">
+              <div className="flex flex-1 justify-center sm:items-center">
                 {/* Logo and links */}
                 <a
-                  className="flex flex-shrink-0 items-center sm:mr-auto"
+                  className="flex text-blue-700 flex-shrink-0 items-center sm:mr-auto"
                   href="/"
                 >
                   <div className="flex flex-shrink-0 items-center sm:mr-auto">
@@ -80,17 +80,15 @@ export function NavBar() {
                     <h1 className="font-bold text-3xl">{SITE_NAME}</h1>
                   </div>
                 </a>
-                <div className="hidden sm:inline flex">
-                  <div className="space-x-4 flex grow sm:ml-auto">
+                <div className="hidden sm:inline self-stretch flex">
+                  <div className="space-x-4 flex h-full grow sm:ml-auto">
                     {navigation.map((item) => (
                       <a
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current
-                            ? "bg-gray-900 text-white"
-                            : "text-black hover:bg-gray-700",
-                          "flex items-center h-10 rounded-md px-3 text-lg font-medium hover:text-white hover:shadow-xl",
+                          item.current ? "bg-sky-800 text-white" : "text-black",
+                          "flex items-center rounded-t-md px-3 text-lg font-medium hover:text-blue-700",
                         )}
                         aria-current={item.current ? "page" : undefined}
                       >
@@ -101,17 +99,17 @@ export function NavBar() {
                   </div>
                 </div>
               </div>
-              <div className="absolute right-0 flex items-center pr-2 sm:static sm:inset-auto sm:pr-0">
+              <div className="absolute right-0 flex items-center pr-2 sm:static sm:inset-auto">
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
                     <Menu.Button
-                      className="relative flex items-center rounded-md px-3 text-lg hover:bg-gray-700 hover:text-white hover:shadow-xl"
+                      className="relative flex items-center px-3 text-lg hover:bg-sky-700 hover:text-white hover:shadow-xl"
                       title="My Account"
                     >
                       <span className="sr-only">Open user menu</span>
                       <UserCircleIcon
-                        className="h-10 w-10 rounded-full"
+                        className="h-10 w-10 mr-2 rounded-full"
                         title="My Account"
                       />
                       <span className="hidden md:flex">My Account</span>
@@ -126,7 +124,7 @@ export function NavBar() {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Menu.Items className="absolute right-0 z-10 w-[100%] origin-top rounded-b-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <Menu.Item>
                         {({ active }) => (
                           <a
