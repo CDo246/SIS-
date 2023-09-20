@@ -1,4 +1,3 @@
-//import { useState } from "react";
 import { trpc } from "../utils/trpc";
 
 export function MainPage() {
@@ -15,12 +14,11 @@ export function MainPage() {
           <button>Publish</button>
           <textarea
             name="Enter Topic"
-            rows={2}
-            cols={50}
             placeholder="Enter Topic Here...."
           ></textarea>
         </div>
       </body>
+
       <p>{hello.data}</p>
     </>
   );
