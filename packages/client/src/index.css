@@ -12,7 +12,7 @@
 
 /* Set height and scrolling for the chat container */
 .chat-container {
-  height: 70vh; /* Adjust height depending on rest of page */
+  height: 60vh; /* Adjust height depending on rest of page */
   overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
 }
 
