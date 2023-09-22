@@ -3,7 +3,11 @@ import * as trpcExpress from "@trpc/server/adapters/express";
 import express from "express";
 import { appRouter } from "./api/router";
 import cors from "cors";
-import path from "path";
+import dotenv from "dotenv";
+import path from 'path';
+
+dotenv.config({ path: ".env" });
+dotenv.config({ path: "../../.env" });
 
 // created for each request
 const createContext = ({
@@ -23,17 +27,18 @@ app.use(
   trpcExpress.createExpressMiddleware({
     router: appRouter,
     createContext,
-  }),
+  })
 );
 
 // serve static assets normally
-app.use(express.static(__dirname + "/dist"));
+app.use(express.static(__dirname + '/dist'));
 
 // handle every other route with index.html, which will contain
 // a script tag to your application's JavaScript file(s).
-app.get("*", function (request, response) {
-  response.sendFile(path.resolve(__dirname, "dist/index.html"));
+app.get('*', function (request, response) {
+  response.sendFile(path.resolve(__dirname, 'dist/index.html'));
 });
 
 app.listen(4000);
 console.log("hi");
+

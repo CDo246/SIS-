@@ -4,7 +4,7 @@
   "main": "server.js",
   "license": "MIT",
   "scripts": {
-    "dev": "tsup src/server.ts --onSuccess \"node dist/server.js\"",
+    "dev": "tsup src/server.ts --watch --onSuccess \"node dist/server.js\"",
     "build": "tsup src/server.ts"
   },
   "devDependencies": {
