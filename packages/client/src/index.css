@@ -10,6 +10,12 @@
   -webkit-text-size-adjust: 100%;
 }
 
+/* Set height and scrolling for the chat container */
+.chat-container {
+  height: 60vh; /* Adjust height depending on rest of page */
+  overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -21,7 +27,6 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
