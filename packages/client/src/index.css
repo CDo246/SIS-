@@ -8,12 +8,8 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
-}
-
-/* Set height and scrolling for the chat container */
-.chat-container {
-  height: 60vh; /* Adjust height depending on rest of page */
-  overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
+  display: flex;
+  flex-direction: column;
 }
 
 a {
@@ -27,7 +23,6 @@ a:hover {
 
 body {
   margin: 0;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -65,31 +60,14 @@ button:focus-visible {
   a:hover {
     color: #747bff;
   }
-  button {
-    background-color: #f9f9f9;
-  }
 }
 
-#footer {
-  align-items: baseline;
-  position: fixed;
-  bottom: 0;
-  box-sizing: border-box;
-  left: 50%;
-  width: 100%;
-  transform: translateX(-50%);
-  position: fixed;
-  bottom: 0;
-}
-#footer button {
-  background-color: rgb(39, 39, 124);
-  margin-bottom: 20px;
-  width: 7%;
-  padding: 10px;
-  color: #f9f9f9;
-}
-textarea {
-  width: 80%;
-  box-sizing: border-box;
-  padding: 2%;
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #213547;
+    background-color: #15202b;
+  }
+  a:hover {
+    color: #747bff;
+  }
 }

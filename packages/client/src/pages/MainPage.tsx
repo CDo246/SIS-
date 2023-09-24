@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { trpc } from "../utils/trpc";
 import "../index.css";
 import TypingText from "../assets/TypingText";
 import leftAvatar from "./left-avatar.jpg";
@@ -13,7 +12,6 @@ export function MainPage() {
     { text: string; isRight: boolean; avatarUrl: string }[]
   >([]);
   const [message, setMessage] = useState<string>("");
-  const hello = trpc.greeting.useQuery();
 
   const handleSend = () => {
     if (message.trim() !== "") {
@@ -28,14 +26,14 @@ export function MainPage() {
   };
   return (
     <>
-      <div className="container mx-auto p-4">
-        <div className="border rounded-lg p-4 shadow-md chat-container">
+      <div className="mx-auto lg:w-8/12 mb-28 p-4">
+        <div className="border min-h-[65vh] overflow-y-auto dark:border-gray-500 rounded-lg p-4 shadow-md grow">
           {messages.map((msg, index) => (
             <div
               key={index}
               className={`flex ${
                 msg.isRight ? "justify-end" : "justify-start"
-              }`}
+              } py-1`}
             >
               {!msg.isRight && ( // Placing left side avatars before chat bubbles, and right side avatars after chat bubbles
                 <img
@@ -44,16 +42,15 @@ export function MainPage() {
                   className="w-8 h-8 rounded-full mr-2" // Adjust 'mr-2' as required for margin purposes
                 />
               )}
-              <div className={`${msg.isRight ? "text-right" : "text-left"}`}>
-                <div
-                  className={`${
-                    msg.isRight ? "bg-blue-100" : "bg-gray-100"
-                  } p-2 rounded-lg inline-block`}
-                  style={{ maxWidth: "50%" }}
-                >
-                  <TypingText text={msg.text} speed={35} />{" "}
-                  {/* Speed can be adjusted to be faster/slower if needed - lower number is faster*/}
-                </div>
+              <div
+                className={`${
+                  msg.isRight
+                    ? "bg-blue-100 dark:bg-blue-950 dark:text-white"
+                    : "bg-gray-100 dark:bg-gray-800 dark:text-white"
+                } p-2 rounded-lg inline-block lg:max-w-2xl max-w-lg`}
+              >
+                <TypingText text={msg.text} speed={35} />{" "}
+                {/* Speed can be adjusted to be faster/slower if needed - lower number is faster*/}
               </div>
               {msg.isRight && (
                 <img
@@ -65,7 +62,7 @@ export function MainPage() {
             </div>
           ))}
         </div>
-        <div className="mt-4">
+        {/* <div className="mt-4">
           <input
             type="text"
             className="w-full p-2 rounded-lg border"
@@ -78,19 +75,24 @@ export function MainPage() {
           >
             Send
           </button>
-        </div>
+        </div> */}
+        {/* input for testing purposes */}
       </div>
-      <body>
-        <div id="footer">
-          <button>Publish</button>
+      <div className="flex justify-center">
+        <div
+          id="footer"
+          className="fixed shadow-lg lg:w-1/2 lg:h-20 h-28 w-11/12 m-2 p-2 space-x-2 justify-center rounded-md bottom-0 bg-white/75 dark:bg-gray-800/75 flex"
+        >
           <textarea
             name="Enter Topic"
             placeholder="Enter Topic Here...."
+            className="resize-none max-w-screen-lg flex-grow box-border bg-transparent dark:text-white"
           ></textarea>
+          <button className="ml-auto self-end bg-blue-950 text-white mx-2 rounded-lg">
+            Publish
+          </button>
         </div>
-      </body>
-
-      <p>{hello.data}</p>
+      </div>
     </>
   );
 }
