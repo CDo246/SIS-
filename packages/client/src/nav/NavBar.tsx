@@ -5,7 +5,7 @@ import {
   XMarkIcon,
   MagnifyingGlassIcon,
   UserCircleIcon,
-  InformationCircleIcon,
+  PhoneIcon,
   ChatBubbleLeftRightIcon,
 } from "@heroicons/react/24/outline";
 import { SITE_NAME } from "client/constants.ts";
@@ -24,10 +24,10 @@ const navigation = [
     current: false,
   },
   {
-    name: "About",
+    name: "Contact Us",
     href: "#",
     src: (
-      <InformationCircleIcon
+      <PhoneIcon
         className="block h-10 w-10"
         aria-hidden="true"
         title="Search"
@@ -104,7 +104,7 @@ export function NavBar() {
                 <Menu as="div" className="relative ml-3">
                   <div>
                     <Menu.Button
-                      className="relative text-black flex items-center px-3 text-lg hover:bg-sky-700 hover:text-white hover:shadow-xl"
+                      className="relative flex items-center px-3 text-lg hover:bg-sky-700 hover:text-white hover:shadow-xl"
                       title="My Account"
                     >
                       <span className="sr-only">Open user menu</span>
