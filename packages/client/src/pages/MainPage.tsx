@@ -12,6 +12,8 @@ export function MainPage() {
     { text: string; isRight: boolean; avatarUrl: string }[]
   >([]);
   const [message, setMessage] = useState<string>("");
+  const [topic, setTopic] = useState<string>("");
+  const [submittedTopic, setSubmittedTopic] = useState<string>("");
 
   const handleSend = () => {
     if (message.trim() !== "") {
@@ -23,6 +25,12 @@ export function MainPage() {
       setMessages([...messages, newMessage]);
       setMessage("");
     }
+  };
+  const handleSubmit = (e: React.ChangeEvent<string>) => {
+    e.preventDefault();
+    setTopic(submittedTopic);
+    const field = document.getElementById("TopicField") as HTMLInputElement;
+    field.value = "";
   };
   return (
     <>
@@ -62,6 +70,9 @@ export function MainPage() {
             </div>
           ))}
         </div>
+        <p className="dark:text-white my-2 text-center">
+          <span className="font-bold">Topic:</span> {topic}
+        </p>
         {/* <div className="mt-4">
           <input
             type="text"
@@ -79,19 +90,30 @@ export function MainPage() {
         {/* input for testing purposes */}
       </div>
       <div className="flex justify-center">
-        <div
-          id="footer"
+        <form
+          name="TopicForm"
+          id="TopicForm"
+          onSubmit={handleSubmit}
           className="fixed shadow-lg lg:w-1/2 lg:h-20 h-28 w-11/12 m-2 p-2 space-x-2 justify-center rounded-md bottom-0 bg-white/75 dark:bg-gray-800/75 flex"
         >
           <textarea
             name="Enter Topic"
+            id="TopicField"
             placeholder="Enter Topic Here...."
+            onChange={(e) => setSubmittedTopic(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.keyCode == 13 && !e.shiftKey) handleSubmit(e);
+            }}
             className="resize-none max-w-screen-lg flex-grow box-border bg-transparent dark:text-white"
           ></textarea>
-          <button className="ml-auto self-end bg-blue-950 text-white mx-2 rounded-lg">
-            Publish
+          <button
+            name="Submit"
+            type="submit"
+            className="ml-auto self-end bg-blue-950 text-white mx-2 rounded-lg"
+          >
+            Go!
           </button>
-        </div>
+        </form>
       </div>
     </>
   );
