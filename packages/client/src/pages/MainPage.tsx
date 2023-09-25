@@ -29,7 +29,7 @@ export function MainPage() {
   const handleSubmit = (
     e:
       | React.KeyboardEvent<HTMLTextAreaElement>
-      | React.FormEvent<HTMLFormElement>
+      | React.FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault();
     if (submittedTopic) {
