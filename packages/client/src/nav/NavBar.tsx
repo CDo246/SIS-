@@ -5,7 +5,7 @@ import {
   XMarkIcon,
   MagnifyingGlassIcon,
   UserCircleIcon,
-  PhoneIcon,
+  InformationCircleIcon,
   ChatBubbleLeftRightIcon,
 } from "@heroicons/react/24/outline";
 import { SITE_NAME } from "client/constants.ts";
@@ -24,10 +24,10 @@ const navigation = [
     current: false,
   },
   {
-    name: "Contact Us",
+    name: "About",
     href: "#",
     src: (
-      <PhoneIcon
+      <InformationCircleIcon
         className="block h-10 w-10"
         aria-hidden="true"
         title="Search"
@@ -124,14 +124,14 @@ export function NavBar() {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute right-0 z-10 w-[100%] origin-top rounded-b-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Menu.Items className="absolute right-0 z-10 space-y-2 sm:w-[100%] w-[200%] origin-top rounded-b-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <Menu.Item>
                         {({ active }) => (
                           <a
                             href="#"
                             className={classNames(
                               active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700",
+                              "block px-4 py-2 text-md text-gray-700",
                             )}
                           >
                             Saved Debates
@@ -144,7 +144,7 @@ export function NavBar() {
                             href="#"
                             className={classNames(
                               active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700",
+                              "block px-4 py-2 text-md text-gray-700",
                             )}
                           >
                             Settings
@@ -157,7 +157,7 @@ export function NavBar() {
                             href="#"
                             className={classNames(
                               active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700",
+                              "block px-4 py-2 text-md text-gray-700",
                             )}
                           >
                             Log out
