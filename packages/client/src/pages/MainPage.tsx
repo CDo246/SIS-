@@ -3,6 +3,7 @@ import "../index.css";
 import TypingText from "../assets/TypingText";
 import leftAvatar from "./left-avatar.jpg";
 import rightAvatar from "./right-avatar.jpg";
+import { trpc } from "../utils/trpc";
 
 export function MainPage() {
   const leftAvatarUrl = leftAvatar; // Left and right side Avatar URLS can be adjusted here
@@ -29,7 +30,7 @@ export function MainPage() {
   const handleSubmit = (
     e:
       | React.KeyboardEvent<HTMLTextAreaElement>
-      | React.FormEvent<HTMLFormElement>,
+      | React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
     if (submittedTopic) {
@@ -41,6 +42,7 @@ export function MainPage() {
   return (
     <>
       <div className="mx-auto lg:w-7/12 lg:min-w-[900px] mb-24 p-4">
+        <TestDebate></TestDebate>
         <div className="border min-h-[65vh] overflow-y-auto dark:border-gray-500 rounded-lg p-4 shadow-md grow">
           {messages.map((msg, index) => (
             <div
@@ -127,5 +129,31 @@ export function MainPage() {
         </form>
       </div>
     </>
+  );
+}
+
+function TestDebate() {
+  const fetchDebate = trpc.generateDebate.useMutation();
+  return (
+    <div>
+      <button
+        onClick={() => {
+          fetchDebate.mutate({
+            role1: "angry drunk",
+            role2: "baby",
+            messageCount: 2,
+            topic: "New york pizza is superior to chicago pizza",
+            startingSide: "for",
+          });
+        }}
+      >
+        generate debate
+      </button>
+      {fetchDebate.isLoading && <div>loading...</div>}
+      {fetchDebate.error && <div>error</div>}
+      {fetchDebate.data && (
+        <pre>{JSON.stringify(fetchDebate.data, null, 2)}</pre>
+      )}
+    </div>
   );
 }
