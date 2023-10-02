@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import OptionsModal from "./OptionsModal.tsx";
 import "../index.css";
 import TypingText from "../assets/TypingText";
 import leftAvatar from "./left-avatar.jpg";
@@ -29,7 +30,7 @@ export function MainPage() {
   const handleSubmit = (
     e:
       | React.KeyboardEvent<HTMLTextAreaElement>
-      | React.FormEvent<HTMLFormElement>,
+      | React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
     if (submittedTopic) {
@@ -105,7 +106,7 @@ export function MainPage() {
           name="TopicForm"
           id="TopicForm"
           onSubmit={handleSubmit}
-          className="fixed shadow-lg lg:w-1/2 lg:h-20 h-24 w-11/12 m-2 p-2 space-x-2 justify-center rounded-md bottom-0 bg-white/75 dark:bg-gray-800/75 flex"
+          className="fixed shadow-lg lg:w-1/2 h-24 w-11/12 m-2 p-2 space-x-2 justify-center rounded-md bottom-0 bg-white/75 dark:bg-gray-800/75 flex"
         >
           <textarea
             name="Enter Topic"
@@ -117,13 +118,16 @@ export function MainPage() {
             }}
             className="resize-none max-w-screen-lg flex-grow box-border bg-transparent dark:text-white"
           ></textarea>
-          <button
-            name="Submit"
-            type="submit"
-            className="ml-auto self-end bg-blue-950 text-white mx-2 rounded-lg"
-          >
-            Go!
-          </button>
+          <div className="flex flex-col">
+            <OptionsModal />
+            <button
+              name="Submit"
+              type="submit"
+              className="ml-auto self-end bg-blue-950 text-white rounded-lg"
+            >
+              Go!
+            </button>
+          </div>
         </form>
       </div>
     </>
