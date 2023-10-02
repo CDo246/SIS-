@@ -129,12 +129,12 @@ let roles: Array<string> = [
   "Caveman",
   //Character From Media (that we may or may not be allowed to use)
   "Super Mario",
-  "Yoda"
+  "Yoda",
 ];
 
 function randomRole() {
-  return roles[(Math.floor(Math.random() * roles.length))];
-};
+  return roles[Math.floor(Math.random() * roles.length)];
+}
 
 let topics: Array<string> = [
   "Dogs are better pets than cats.",
@@ -158,12 +158,12 @@ let topics: Array<string> = [
   "Should all drugs be decriminalized?",
   "Is there such a thing as fate or destiny?",
   "Should schools have mandatory physical education?",
-  "Is it better to have a pet dragon or a pet unicorn?"
+  "Is it better to have a pet dragon or a pet unicorn?",
 ];
 
 function randomTopic() {
-  return topics[(Math.floor(Math.random() * topics.length))];
-};
+  return topics[Math.floor(Math.random() * topics.length)];
+}
 
 async function main() {
   console.log("starting debate, please wait...");
