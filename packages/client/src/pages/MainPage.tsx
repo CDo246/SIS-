@@ -3,6 +3,7 @@ import "../index.css";
 import TypingText from "../assets/TypingText";
 import leftAvatar from "./left-avatar.jpg";
 import rightAvatar from "./right-avatar.jpg";
+import { trpc } from "../utils/trpc";
 
 export function MainPage() {
   const leftAvatarUrl = leftAvatar; // Left and right side Avatar URLS can be adjusted here
@@ -15,16 +16,35 @@ export function MainPage() {
   const [topic, setTopic] = useState<string>("");
   const [submittedTopic, setSubmittedTopic] = useState<string>("");
 
-  const handleSend = () => {
-    if (message.trim() !== "") {
-      const newMessage = {
-        text: message,
-        isRight: messages.length % 2 === 0,
-        avatarUrl: messages.length % 2 === 0 ? rightAvatarUrl : leftAvatarUrl,
-      }; // Checking whether message is sent by right or left bot
-      setMessages([...messages, newMessage]);
-      setMessage("");
-    }
+  const fetchDebate = trpc.generateDebate.useMutation();
+
+  const handleSend = async (topic: string) => {
+    // if (message.trim() !== "") {
+    //   const newMessage = {
+    //     text: message,
+    //     isRight: messages.length % 2 === 0,
+    //     avatarUrl: messages.length % 2 === 0 ? rightAvatarUrl : leftAvatarUrl,
+    //   }; // Checking whether message is sent by right or left bot
+    //   setMessages([...messages, newMessage]);
+    //   setMessage("");
+    // }
+    const response = await fetchDebate.mutateAsync({
+      role1: "debater",
+      role2: "debater",
+      messageCount: 2,
+      topic: topic,
+      startingSide: "for",
+    });
+
+    setMessages(
+      response.map((message) => {
+        return {
+          text: message.message,
+          isRight: message.side == "for",
+          avatarUrl: message.side == "for" ? rightAvatarUrl : leftAvatarUrl,
+        };
+      }),
+    );
   };
   const handleSubmit = (
     e:
@@ -33,14 +53,15 @@ export function MainPage() {
   ) => {
     e.preventDefault();
     if (submittedTopic) {
+      handleSend(submittedTopic.trim());
       setTopic(submittedTopic.trim());
-      const field = document.getElementById("TopicField") as HTMLInputElement;
-      field.value = "";
+      setSubmittedTopic("");
     }
   };
   return (
     <>
       <div className="mx-auto lg:w-7/12 lg:min-w-[900px] mb-24 p-4">
+        {/* <TestDebate></TestDebate> */}
         <div className="border min-h-[65vh] overflow-y-auto dark:border-gray-500 rounded-lg p-4 shadow-md grow">
           {messages.map((msg, index) => (
             <div
@@ -102,16 +123,13 @@ export function MainPage() {
       </div>
       <div className="flex justify-center">
         <form
-          name="TopicForm"
-          id="TopicForm"
           onSubmit={handleSubmit}
           className="fixed shadow-lg lg:w-1/2 lg:h-20 h-24 w-11/12 m-2 p-2 space-x-2 justify-center rounded-md bottom-0 bg-white/75 dark:bg-gray-800/75 flex"
         >
           <textarea
-            name="Enter Topic"
-            id="TopicField"
             placeholder="Enter Topic Here...."
             onChange={(e) => setSubmittedTopic(e.target.value)}
+            value={submittedTopic}
             onKeyDown={(e) => {
               if (e.key == "Enter" && !e.shiftKey) handleSubmit(e);
             }}
@@ -129,3 +147,28 @@ export function MainPage() {
     </>
   );
 }
+
+// function TestDebate() {
+//   return (
+//     <div>
+//       <button
+//         onClick={() => {
+//           fetchDebate.mutate({
+//             role1: "angry drunk",
+//             role2: "baby",
+//             messageCount: 2,
+//             topic: "New york pizza is superior to chicago pizza",
+//             startingSide: "for",
+//           });
+//         }}
+//       >
+//         generate debate
+//       </button>
+//       {fetchDebate.isLoading && <div>loading...</div>}
+//       {fetchDebate.error && <div>error</div>}
+//       {fetchDebate.data && (
+//         <pre>{JSON.stringify(fetchDebate.data, null, 2)}</pre>
+//       )}
+//     </div>
+//   );
+// }

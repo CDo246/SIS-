@@ -2,9 +2,39 @@ import { ChatCompletionMessageParam } from "openai/resources/chat";
 import { openaiKey } from "../env";
 import { publicProcedure, router } from "./trpc";
 import OpenAI from "openai";
+import { z } from "zod";
+
+const sideSchema = z.union([z.literal("for"), z.literal("against")]);
+
+type Side = z.infer<typeof sideSchema>;
+
+const argumentParamsSchema = z.object({
+  startingSide: sideSchema,
+  topic: z.string(),
+  messageCount: z.number(),
+  role1: z.string(),
+  role2: z.string(),
+});
+
+type ArgumentParams = z.infer<typeof argumentParamsSchema>;
 
 export const appRouter = router({
   greeting: publicProcedure.query(() => "hello tRPC v10!"),
+  generateDebate: publicProcedure
+    .input(argumentParamsSchema)
+    .mutation(async ({ input }) => {
+      const messages: DebateMessage[] = [];
+      for (let i = 0; i < input.messageCount * 2; i++) {
+        const nextMessage = await generateNextMessage(input, messages);
+        messages.push(nextMessage);
+        console.log(nextMessage.side);
+        console.log("thinking:", nextMessage.thinking);
+        console.log("---------------");
+        console.log(nextMessage.message);
+        console.log();
+      }
+      return messages;
+    }),
 });
 
 // Export only the type of a router!
@@ -14,8 +44,6 @@ export type AppRouter = typeof appRouter;
 const openai = new OpenAI({
   apiKey: openaiKey,
 });
-
-type Side = "for" | "against";
 
 type DebateMessage = {
   side: Side;
@@ -29,14 +57,6 @@ type SysMessageParams = {
   messageCount: number;
   topic: string;
   side: Side;
-};
-
-type ArgumentParams = {
-  startingSide: Side;
-  topic: string;
-  messageCount: number;
-  role1: string;
-  role2: string;
 };
 
 function flipSide(side: Side): Side {
@@ -165,29 +185,29 @@ function randomTopic() {
   return topics[Math.floor(Math.random() * topics.length)];
 }
 
-async function main() {
-  console.log("starting debate, please wait...");
-  const params: ArgumentParams = {
-    role1: randomRole(),
-    role2: randomRole(),
-    messageCount: 2,
-    topic: randomTopic(),
-    startingSide: "for",
-  };
+// async function main() {
+//   console.log("starting debate, please wait...");
+//   const params: ArgumentParams = {
+//     role1: randomRole(),
+//     role2: randomRole(),
+//     messageCount: 2,
+//     topic: randomTopic(),
+//     startingSide: "for",
+//   };
 
-  console.log("TOPIC: " + params.topic);
-  console.log(params.role1 + " VS. " + params.role2 + "\n");
+//   console.log("TOPIC: " + params.topic);
+//   console.log(params.role1 + " VS. " + params.role2 + "\n");
 
-  const messages: DebateMessage[] = [];
-  for (let i = 0; i < params.messageCount * 2; i++) {
-    const nextMessage = await generateNextMessage(params, messages);
-    messages.push(nextMessage);
-    console.log(nextMessage.side);
-    console.log("thinking:", nextMessage.thinking);
-    console.log("---------------");
-    console.log(nextMessage.message);
-    console.log();
-  }
-}
+//   const messages: DebateMessage[] = [];
+//   for (let i = 0; i < params.messageCount * 2; i++) {
+//     const nextMessage = await generateNextMessage(params, messages);
+//     messages.push(nextMessage);
+//     console.log(nextMessage.side);
+//     console.log("thinking:", nextMessage.thinking);
+//     console.log("---------------");
+//     console.log(nextMessage.message);
+//     console.log();
+//   }
+// }
 
-main();
+// main();
