@@ -2,12 +2,9 @@ import { ChatCompletionMessageParam } from "openai/resources/chat";
 import { openaiKey } from "../env";
 import { publicProcedure, router } from "./trpc";
 import OpenAI from "openai";
-import {z} from "zod";
+import { z } from "zod";
 
-const sideSchema = z.union([
-  z.literal("for"),
-  z.literal("against"),
-]);
+const sideSchema = z.union([z.literal("for"), z.literal("against")]);
 
 type Side = z.infer<typeof sideSchema>;
 
@@ -23,19 +20,21 @@ type ArgumentParams = z.infer<typeof argumentParamsSchema>;
 
 export const appRouter = router({
   greeting: publicProcedure.query(() => "hello tRPC v10!"),
-  generateDebate: publicProcedure.input(argumentParamsSchema).mutation(async({input}) => {
-    const messages: DebateMessage[] = [];
-    for (let i = 0; i < input.messageCount * 2; i++) {
-      const nextMessage = await generateNextMessage(input, messages);
-      messages.push(nextMessage);
-      console.log(nextMessage.side);
-      console.log("thinking:", nextMessage.thinking);
-      console.log("---------------");
-      console.log(nextMessage.message);
-      console.log();
-    }
-    return messages;
-  })
+  generateDebate: publicProcedure
+    .input(argumentParamsSchema)
+    .mutation(async ({ input }) => {
+      const messages: DebateMessage[] = [];
+      for (let i = 0; i < input.messageCount * 2; i++) {
+        const nextMessage = await generateNextMessage(input, messages);
+        messages.push(nextMessage);
+        console.log(nextMessage.side);
+        console.log("thinking:", nextMessage.thinking);
+        console.log("---------------");
+        console.log(nextMessage.message);
+        console.log();
+      }
+      return messages;
+    }),
 });
 
 // Export only the type of a router!
@@ -145,7 +144,6 @@ async function main() {
   //   topic: "New york pizza is superior to chicago pizza",
   //   startingSide: "for",
   // };
-
   // const messages: DebateMessage[] = [];
   // for (let i = 0; i < params.messageCount * 2; i++) {
   //   const nextMessage = await generateNextMessage(params, messages);
