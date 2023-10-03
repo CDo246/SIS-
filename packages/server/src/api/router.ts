@@ -135,25 +135,79 @@ async function generateNextMessage(
   return { message: message, side: side, thinking: thinking };
 }
 
-async function main() {
-  // console.log("starting debate, please wait...");
-  // const params: ArgumentParams = {
-  //   role1: "angry drunk",
-  //   role2: "baby",
-  //   messageCount: 2,
-  //   topic: "New york pizza is superior to chicago pizza",
-  //   startingSide: "for",
-  // };
-  // const messages: DebateMessage[] = [];
-  // for (let i = 0; i < params.messageCount * 2; i++) {
-  //   const nextMessage = await generateNextMessage(params, messages);
-  //   messages.push(nextMessage);
-  //   console.log(nextMessage.side);
-  //   console.log("thinking:", nextMessage.thinking);
-  //   console.log("---------------");
-  //   console.log(nextMessage.message);
-  //   console.log();
-  // }
+let roles: Array<string> = [
+  "Philosopher",
+  "Angry Drunk",
+  "Conspiracy Theorist",
+  "Cowboy",
+  "Pirate",
+  "Valley Girl",
+  "Shakespearean Bard",
+  "Hyperactive Dog That Can Talk",
+  "Mime",
+  "Professional Rapper That Rhymes Everything",
+  "Caveman",
+  //Character From Media (that we may or may not be allowed to use)
+  "Super Mario",
+  "Yoda",
+];
+
+function randomRole() {
+  return roles[Math.floor(Math.random() * roles.length)];
 }
+
+let topics: Array<string> = [
+  "Dogs are better pets than cats.",
+  "Summer is better than winter.",
+  "Pepperoni is the best pizza topping.",
+  "Clowns are more scary than funny.",
+  "Modern music is better than classical music.",
+  "It would be better to be able to fly than to be able to turn invisible.",
+  "Pluto should still be considered a planet.",
+  "We should allow people to go barefoot anywhere if they want to.",
+  "Fiction is better than non-fiction.",
+  "People should not have to go to school or work on their birthdays.",
+  "Should time travel be allowed?",
+  "Is a hot dog a sandwich?",
+  "Do aliens exist?",
+  "Is it ethical to use animals for scientific research?",
+  "Are video games a form of art?",
+  "Are humans inherently good or evil?",
+  "Is it ethical to use animals for scientific research?",
+  "Is money the root of all evil?",
+  "Should all drugs be decriminalized?",
+  "Is there such a thing as fate or destiny?",
+  "Should schools have mandatory physical education?",
+  "Is it better to have a pet dragon or a pet unicorn?",
+];
+
+function randomTopic() {
+  return topics[Math.floor(Math.random() * topics.length)];
+}
+
+// async function main() {
+//   console.log("starting debate, please wait...");
+//   const params: ArgumentParams = {
+//     role1: randomRole(),
+//     role2: randomRole(),
+//     messageCount: 2,
+//     topic: randomTopic(),
+//     startingSide: "for",
+//   };
+
+//   console.log("TOPIC: " + params.topic);
+//   console.log(params.role1 + " VS. " + params.role2 + "\n");
+
+//   const messages: DebateMessage[] = [];
+//   for (let i = 0; i < params.messageCount * 2; i++) {
+//     const nextMessage = await generateNextMessage(params, messages);
+//     messages.push(nextMessage);
+//     console.log(nextMessage.side);
+//     console.log("thinking:", nextMessage.thinking);
+//     console.log("---------------");
+//     console.log(nextMessage.message);
+//     console.log();
+//   }
+// }
 
 // main();
