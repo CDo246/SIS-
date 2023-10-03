@@ -36,4 +36,3 @@ app.get("*", function (request, response) {
 });
 
 app.listen(4000);
-console.log("hi");
