@@ -78,8 +78,8 @@ export function MainPage() {
               )}
               <div
                 className={`${msg.isRight
-                    ? "bg-blue-100 dark:bg-blue-950 dark:text-white"
-                    : "bg-gray-100 dark:bg-gray-800 dark:text-white"
+                  ? "bg-blue-100 dark:bg-blue-950 dark:text-white"
+                  : "bg-gray-100 dark:bg-gray-800 dark:text-white"
                   } p-2 rounded-lg inline-block max-w-xl`}
               >
                 <TypingText text={msg.text} speed={35} />{" "}
@@ -119,22 +119,6 @@ export function MainPage() {
         </div> */}
         {/* input for testing purposes */}
       </div>
-<<<<<<< HEAD
-
-
-
-
-      <body>
-        <div id="footer">
-          <button>Publish</button>
-
-          <textarea name="Enter Topic" placeholder="Enter Topic Here...."></textarea>
-        </div>
-      </body>
-
-
-      <p>{hello.data}</p>
-=======
       <div className="flex justify-center">
         <form
           onSubmit={handleSubmit}
@@ -158,7 +142,6 @@ export function MainPage() {
           </button>
         </form>
       </div>
->>>>>>> d23e9cda74ad23970daeebf94dd02e693e138bc3
     </>
   );
 }
