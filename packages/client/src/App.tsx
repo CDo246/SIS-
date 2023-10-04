@@ -1,10 +1,22 @@
 import { useState } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { MainPage } from "./pages/MainPage";
 import { NavBar } from "./nav/NavBar.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { trpc } from "./utils/trpc";
 import { httpBatchLink } from "@trpc/client";
-import { About } from './pages/About.tsx';
+import { About } from "./pages/About.tsx";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <MainPage />,
+  },
+  {
+    path: "/About",
+    element: <About />,
+  },
+]);
 
 function App() {
   const [queryClient] = useState(() => new QueryClient());
@@ -19,15 +31,14 @@ function App() {
           },
         }),
       ],
-    }),
+    })
   );
 
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <NavBar />
-        <About />
-        <MainPage />
+        <RouterProvider router={router} />
       </QueryClientProvider>
     </trpc.Provider>
   );

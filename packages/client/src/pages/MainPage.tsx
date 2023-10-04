@@ -43,13 +43,13 @@ export function MainPage() {
           isRight: message.side == "for",
           avatarUrl: message.side == "for" ? rightAvatarUrl : leftAvatarUrl,
         };
-      }),
+      })
     );
   };
   const handleSubmit = (
     e:
       | React.KeyboardEvent<HTMLTextAreaElement>
-      | React.FormEvent<HTMLFormElement>,
+      | React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
     if (submittedTopic) {
