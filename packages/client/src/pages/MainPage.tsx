@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import OptionsModal from "./OptionsModal.tsx";
+import OptionsBar from "./OptionsBar.tsx";
 import "../index.css";
 import TypingText from "../assets/TypingText";
 import leftAvatar from "./left-avatar.jpg";
@@ -44,7 +44,7 @@ export function MainPage() {
           isRight: message.side == "for",
           avatarUrl: message.side == "for" ? rightAvatarUrl : leftAvatarUrl,
         };
-      }),
+      })
     );
   };
   const handleSubmit = (
@@ -63,7 +63,8 @@ export function MainPage() {
     <>
       <div className="mx-auto lg:w-7/12 lg:min-w-[900px] mb-24 p-4">
         {/* <TestDebate></TestDebate> */}
-        <div className="border min-h-[65vh] overflow-y-auto dark:border-gray-500 rounded-lg p-4 shadow-md grow">
+        <OptionsBar />
+        <div className="border h-[65vh] overflow-y-auto dark:border-gray-500 rounded-lg p-4 shadow-md grow">
           {messages.map((msg, index) => (
             <div
               key={index}
@@ -137,7 +138,6 @@ export function MainPage() {
             className="resize-none max-w-screen-lg flex-grow box-border bg-transparent dark:text-white"
           ></textarea>
           <div className="flex flex-col">
-            <OptionsModal />
             <button
               name="Submit"
               type="submit"

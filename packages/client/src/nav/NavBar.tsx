@@ -45,7 +45,7 @@ export function NavBar() {
   return (
     <Disclosure
       as="nav"
-      className="sticky top-0 bg-gradient-to-r from-blue-200 to-sky-400 shadow-md"
+      className="sticky top-0 z-50 bg-gradient-to-r from-blue-200 to-sky-400 shadow-md"
     >
       {({ open }) => (
         <>
