@@ -4,7 +4,8 @@ import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 
 export default function OptionsBar() {
   const [isOpen, setIsOpen] = useState(false);
-  const roles: Array<string> = [ // temporary
+  const roles: Array<string> = [
+    // temporary
     "Philosopher",
     "Angry Drunk",
     "Conspiracy Theorist",
@@ -44,7 +45,10 @@ export default function OptionsBar() {
           leaveTo="opacity-0"
           className="lg:space-x-2 lg:space-y-0 space-y-2 p-2 flex flex-col lg:flex-row absolute lg:top-2 top-16 lg:right-8 right-0 lg:justify-between lg:w-[90%] w-full md:h-[15vh] lg:h-14 rounded-lg bg-white/90 dark:bg-gray-800/90"
         >
-          <Listbox value={selectedRoleAgainst} onChange={setSelectedRoleAgainst}>
+          <Listbox
+            value={selectedRoleAgainst}
+            onChange={setSelectedRoleAgainst}
+          >
             <div className="flex lg:flex-row flex-col lg:space-x-2">
               <Listbox.Label className="dark:text-white font-bold sm:pl-0 pl-2 sm:pb-0 pb-1">
                 Against:
