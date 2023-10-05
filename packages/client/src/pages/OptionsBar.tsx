@@ -1,6 +1,6 @@
 import { Listbox, Transition } from "@headlessui/react";
 import { useState } from "react";
-import { Cog6ToothIcon } from "@heroicons/react/24/solid";
+import { Cog6ToothIcon, XMarkIcon } from "@heroicons/react/24/solid";
 
 export default function OptionsBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,7 +32,8 @@ export default function OptionsBar() {
           onClick={() => setIsOpen(!isOpen)}
           className="flex absolute left-2 top-4 align-center justify-center bg-opacity-20 text-sm dark:text-gray-300 hover:bg-opacity-30 focus:outline-none focus-visible:ring-1 focus-visible:ring-white focus-visible:ring-opacity-75 px-0 py-0 w-9 h-9"
         >
-          <Cog6ToothIcon className="w-9 h-9" title="Options" />
+          {!isOpen && <Cog6ToothIcon className="w-9 h-9" title="Options" />}
+          {isOpen && <XMarkIcon className="w-9 h-9" title="Close" />}
         </button>
         <Transition
           appear
