@@ -6,7 +6,20 @@ import {
   ChevronDownIcon,
 } from "@heroicons/react/24/solid";
 
-export default function OptionsBar() {
+export default function OptionsBar(props: {
+  selectedRoleAgainst: string;
+  setSelectedRoleAgainst: React.Dispatch<React.SetStateAction<string>>;
+  selectedRoleFor: string;
+  setSelectedRoleFor: React.Dispatch<React.SetStateAction<string>>;
+  messageCount: number;
+  setMessageCount: React.Dispatch<React.SetStateAction<number>>;
+}) {
+  const selectedRoleAgainst = props.selectedRoleAgainst;
+  const setSelectedRoleAgainst = props.setSelectedRoleAgainst;
+  const selectedRoleFor = props.selectedRoleFor;
+  const setSelectedRoleFor = props.setSelectedRoleFor;
+  const messageCount = props.messageCount;
+  const setMessageCount = props.setMessageCount;
   const [isOpen, setIsOpen] = useState(false);
   const roles: Array<string> = [
     // temporary
@@ -25,8 +38,6 @@ export default function OptionsBar() {
     "Super Mario",
     "Yoda",
   ];
-  const [selectedRoleFor, setSelectedRoleFor] = useState(null);
-  const [selectedRoleAgainst, setSelectedRoleAgainst] = useState(null);
 
   return (
     <>
@@ -111,13 +122,22 @@ export default function OptionsBar() {
             <label
               className="dark:text-white font-bold sm:pb-0 lg:mr-2"
               htmlFor="Message Count"
+              title="Number of messages per debater"
             >
               Message Count:
             </label>
             <input
+              onChange={(e) => {
+                if (
+                  (e.target.value as unknown as number) >= 1 &&
+                  (e.target.value as unknown as number) <= 4
+                )
+                  setMessageCount(e.target.value as unknown as number);
+              }}
               type="number"
               id="messageCount"
               name="Message Count"
+              defaultValue={messageCount}
               min="1"
               max="4"
               className="w-16 p-1.5 text-center rounded-lg bg-sky-200"

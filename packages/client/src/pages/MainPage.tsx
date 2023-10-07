@@ -16,6 +16,9 @@ export function MainPage() {
   const [message, setMessage] = useState<string>("");
   const [topic, setTopic] = useState<string>("");
   const [submittedTopic, setSubmittedTopic] = useState<string>("");
+  const [selectedRoleFor, setSelectedRoleFor] = useState<string>("");
+  const [selectedRoleAgainst, setSelectedRoleAgainst] = useState<string>("");
+  const [messageCount, setMessageCount] = useState<number>(2);
 
   const fetchDebate = trpc.generateDebate.useMutation();
 
@@ -63,7 +66,14 @@ export function MainPage() {
     <>
       <div className="mx-auto lg:w-7/12 lg:min-w-[900px] mb-24 p-4">
         {/* <TestDebate></TestDebate> */}
-        <OptionsBar />
+        <OptionsBar
+          selectedRoleAgainst={selectedRoleAgainst}
+          setSelectedRoleAgainst={setSelectedRoleAgainst}
+          selectedRoleFor={selectedRoleFor}
+          setSelectedRoleFor={setSelectedRoleFor}
+          messageCount={messageCount}
+          setMessageCount={setMessageCount}
+        />
         <div className="border h-[65vh] overflow-y-auto dark:border-gray-500 rounded-lg p-4 shadow-md grow">
           {messages.map((msg, index) => (
             <div
