@@ -126,7 +126,7 @@ export function MainPage() {
       <div className="flex justify-center">
         <form
           onSubmit={handleSubmit}
-          className="fixed shadow-lg lg:w-1/2 h-24 w-11/12 m-2 p-2 space-x-2 justify-center rounded-md bottom-0 bg-white/75 dark:bg-gray-800/75 flex"
+          className="fixed shadow-lg lg:w-1/2 h-24 w-11/12 m-2 p-2 space-x-2 justify-center rounded-md bottom-0 bg-sky-100/75 dark:bg-gray-800/75 flex"
         >
           <textarea
             placeholder="Enter Topic Here...."
