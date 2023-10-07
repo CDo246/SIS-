@@ -84,9 +84,9 @@ export function MainPage() {
                   msg.isRight
                     ? "bg-blue-100 dark:bg-blue-950 dark:text-white"
                     : "bg-gray-100 dark:bg-gray-800 dark:text-white"
-                } p-2 rounded-lg inline-block max-w-xl`}
+                } p-2 rounded-lg inline-block max-w-2xl`}
               >
-                <TypingText text={msg.text} speed={35} />{" "}
+                <TypingText text={msg.text} speed={5} />{" "}
                 {/* Speed can be adjusted to be faster/slower if needed - lower number is faster*/}
               </div>
               {msg.isRight && (

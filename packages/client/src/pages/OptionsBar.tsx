@@ -34,10 +34,20 @@ export default function OptionsBar() {
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className="flex align-center pointer-events-auto drop-shadow-xl justify-center bg-opacity-20 text-sm dark:text-gray-300 hover:bg-opacity-30 focus:outline-none focus-visible:ring-1 focus-visible:ring-white focus-visible:ring-opacity-75 px-0 ml-8 lg:ml-0 py-0 w-9 h-9"
+          className="flex align-center pointer-events-auto drop-shadow-xl justify-center bg-opacity-20 text-sm dark:text-gray-300 hover:bg-opacity-30 focus:outline-none focus-visible:ring-1 focus-visible:ring-white focus-visible:ring-opacity-75 px-0 ml-8 lg:ml-0 py-0 w-9"
         >
-          {!isOpen && <Cog6ToothIcon className="w-9 h-9" title="Options" />}
-          {isOpen && <XMarkIcon className="w-9 h-9" title="Close" />}
+          {!isOpen && (
+            <Cog6ToothIcon
+              className="w-9 h-9 bg-gray-800/90 rounded-lg"
+              title="Options"
+            />
+          )}
+          {isOpen && (
+            <XMarkIcon
+              className="w-9 h-9 bg-gray-800/90 rounded-lg"
+              title="Close"
+            />
+          )}
         </button>
         <Transition
           appear
@@ -90,8 +100,24 @@ export default function OptionsBar() {
               </Transition>
             </div>
           </Listbox>
+          <div className="flex lg:order-2 order-last lg:items-center relative lg:flex-row flex-col lg:w-96 lg:space-y-0">
+            <label
+              className="dark:text-white font-bold sm:pb-0"
+              htmlFor="Message Count"
+            >
+              Message Count:&nbsp;
+            </label>
+            <input
+              type="number"
+              id="messageCount"
+              name="Message Count"
+              min="1"
+              max="4"
+              className="w-12 p-1.5 text-center rounded-lg bg-sky-200"
+            ></input>
+          </div>
           <Listbox value={selectedRoleFor} onChange={setSelectedRoleFor}>
-            <div className="flex lg:items-center relative lg:flex-row flex-col lg:space-y-0">
+            <div className="flex lg:items-center lg:order-last order-2 relative lg:flex-row flex-col lg:space-y-0">
               <Transition
                 appear
                 enter="transition-opacity duration-75"
@@ -127,6 +153,11 @@ export default function OptionsBar() {
               </Listbox.Button>
             </div>
           </Listbox>
+          {isOpen && (
+            <span className="fixed rounded-b-lg rounded-t-lg lg:rounded-t-none lg:top-36 top-[23rem] left-0 right-0 lg:left-[initial] lg:right-[initial] mx-auto w-[85%] lg:w-[initial] p-2 dark:text-white dark:bg-gray-800/90">
+              These changes will take effect when a new debate is generated.
+            </span>
+          )}
         </Transition>
       </div>
     </>
