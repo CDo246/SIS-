@@ -5,6 +5,7 @@ import {
   XMarkIcon,
   ChevronDownIcon,
 } from "@heroicons/react/24/solid";
+import { trpc } from "../utils/trpc";
 
 export default function OptionsBar(props: {
   selectedRoleAgainst: string;
@@ -21,23 +22,7 @@ export default function OptionsBar(props: {
   const messageCount = props.messageCount;
   const setMessageCount = props.setMessageCount;
   const [isOpen, setIsOpen] = useState(false);
-  const roles: Array<string> = [
-    // temporary
-    "Philosopher",
-    "Angry Drunk",
-    "Conspiracy Theorist",
-    "Cowboy",
-    "Pirate",
-    "Valley Girl",
-    "Shakespearean Bard",
-    "Hyperactive Dog That Can Talk",
-    "Mime",
-    "Professional Rapper That Rhymes Everything",
-    "Caveman",
-    //Character From Media (that we may or may not be allowed to use)
-    "Super Mario",
-    "Yoda",
-  ];
+  const roles: string[] | undefined = trpc.roles.useQuery().data;
 
   return (
     <>
@@ -100,20 +85,21 @@ export default function OptionsBar(props: {
                 leaveTo="opacity-0"
                 className="absolute left-0 top-16 lg:top-0 w-full z-40"
               >
-                <Listbox.Options className="lg:space-y-0 space-y-3 lg:mt-12 z-40 max-h-56 rounded-md overflow-y-auto bg-white">
-                  {roles.map((role) => (
-                    <Listbox.Option value={role} className="cursor-pointer">
-                      {({ active, selected }) => (
-                        <li
-                          className={`${active && "bg-sky-100 rounded-md"} ${
+                <Listbox.Options className="lg:space-y-0 space-y-3 lg:mt-12 z-40 max-h-56 rounded-b-md overflow-y-auto bg-white">
+                  {roles &&
+                    roles.map((role) => (
+                      <Listbox.Option
+                        key={role}
+                        value={role}
+                        className={({ active, selected }) =>
+                          `${active && "bg-sky-100 rounded-md"} ${
                             selected && "bg-sky-200"
-                          } p-1 pl-2`}
-                        >
-                          {role}
-                        </li>
-                      )}
-                    </Listbox.Option>
-                  ))}
+                          } p-1 pl-2 cursor-pointer`
+                        }
+                      >
+                        {role}
+                      </Listbox.Option>
+                    ))}
                 </Listbox.Options>
               </Transition>
             </div>
@@ -132,7 +118,7 @@ export default function OptionsBar(props: {
                   (e.target.value as unknown as number) >= 1 &&
                   (e.target.value as unknown as number) <= 4
                 )
-                  setMessageCount(e.target.value as unknown as number);
+                  setMessageCount(e.target.valueAsNumber);
               }}
               type="number"
               id="messageCount"
@@ -155,20 +141,21 @@ export default function OptionsBar(props: {
                 leaveTo="opacity-0"
                 className="absolute right-0 top-16 lg:top-0 w-full z-40"
               >
-                <Listbox.Options className="lg:space-y-0 space-y-3 lg:mt-12 z-40 max-h-56 rounded-md overflow-y-auto bg-white">
-                  {roles.map((role) => (
-                    <Listbox.Option value={role} className="cursor-pointer">
-                      {({ active, selected }) => (
-                        <li
-                          className={`${active && "bg-sky-100 rounded-md"} ${
+                <Listbox.Options className="lg:space-y-0 space-y-3 lg:mt-12 z-40 max-h-56 rounded-b-md overflow-y-auto bg-white">
+                  {roles &&
+                    roles.map((role) => (
+                      <Listbox.Option
+                        key={role}
+                        value={role}
+                        className={({ active, selected }) =>
+                          `${active && "bg-sky-100 rounded-md"} ${
                             selected && "bg-sky-200"
-                          } p-1 pl-2`}
-                        >
-                          {role}
-                        </li>
-                      )}
-                    </Listbox.Option>
-                  ))}
+                          } p-1 pl-2 cursor-pointer`
+                        }
+                      >
+                        {role}
+                      </Listbox.Option>
+                    ))}
                 </Listbox.Options>
               </Transition>
               <Listbox.Label className="dark:text-white font-bold sm:pb-0 text-end lg:mr-2">

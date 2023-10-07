@@ -16,11 +16,13 @@ export function MainPage() {
   const [message, setMessage] = useState<string>("");
   const [topic, setTopic] = useState<string>("");
   const [submittedTopic, setSubmittedTopic] = useState<string>("");
-  const [selectedRoleFor, setSelectedRoleFor] = useState<string>("");
-  const [selectedRoleAgainst, setSelectedRoleAgainst] = useState<string>("");
+  const [selectedRoleFor, setSelectedRoleFor] = useState<string>("Debater");
+  const [selectedRoleAgainst, setSelectedRoleAgainst] =
+    useState<string>("Debater");
   const [messageCount, setMessageCount] = useState<number>(2);
 
   const fetchDebate = trpc.generateDebate.useMutation();
+  const randomPlaceholder = trpc.randTopic.useQuery().data;
 
   const handleSend = async (topic: string) => {
     // if (message.trim() !== "") {
@@ -33,9 +35,9 @@ export function MainPage() {
     //   setMessage("");
     // }
     const response = await fetchDebate.mutateAsync({
-      role1: "debater",
-      role2: "debater",
-      messageCount: 2,
+      role1: selectedRoleFor,
+      role2: selectedRoleAgainst,
+      messageCount: messageCount as number,
       topic: topic,
       startingSide: "for",
     });
@@ -139,7 +141,9 @@ export function MainPage() {
           className="fixed shadow-lg lg:w-1/2 h-24 w-11/12 m-2 p-2 space-x-2 justify-center rounded-md bottom-0 bg-sky-100/75 dark:bg-gray-800/75 flex"
         >
           <textarea
-            placeholder="Enter Topic Here...."
+            placeholder={
+              randomPlaceholder ? randomPlaceholder : "Enter Topic Here..."
+            }
             onChange={(e) => setSubmittedTopic(e.target.value)}
             value={submittedTopic}
             onKeyDown={(e) => {

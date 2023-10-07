@@ -35,6 +35,12 @@ export const appRouter = router({
       }
       return messages;
     }),
+  randTopic: publicProcedure.query(() => {
+    return randomTopic();
+  }),
+  roles: publicProcedure.query(() => {
+    return roles;
+  }),
 });
 
 // Export only the type of a router!
