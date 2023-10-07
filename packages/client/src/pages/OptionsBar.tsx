@@ -1,6 +1,10 @@
 import { Listbox, Transition } from "@headlessui/react";
 import { useState } from "react";
-import { Cog6ToothIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import {
+  Cog6ToothIcon,
+  XMarkIcon,
+  ChevronDownIcon,
+} from "@heroicons/react/24/solid";
 
 export default function OptionsBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -68,9 +72,12 @@ export default function OptionsBar() {
               <Listbox.Label className="dark:text-white font-bold sm:pb-0 lg:mr-2">
                 Against:
               </Listbox.Label>
-              <Listbox.Button className="bg-sky-200 text-black text-sm lg:max-w-[75%] w-11/12 lg:p-1">
-                {!selectedRoleAgainst && <span>Choose role...</span>}
-                {selectedRoleAgainst}
+              <Listbox.Button className="flex justify-between items-center text-left bg-sky-200 text-black text-sm lg:max-w-[75%] w-11/12 lg:p-1">
+                <span className="pl-2">
+                  {!selectedRoleAgainst && "Choose role..."}
+                  {selectedRoleAgainst}
+                </span>
+                <ChevronDownIcon className="h-6 inline"></ChevronDownIcon>
               </Listbox.Button>
               <Transition
                 appear
@@ -147,9 +154,12 @@ export default function OptionsBar() {
               <Listbox.Label className="dark:text-white font-bold sm:pb-0 text-end lg:mr-2">
                 For:
               </Listbox.Label>
-              <Listbox.Button className="bg-sky-200 text-black text-sm lg:max-w-[75%] w-11/12 lg:p-1">
-                {!selectedRoleFor && <span>Choose role...</span>}
-                {selectedRoleFor}
+              <Listbox.Button className="flex justify-between items-center text-left bg-sky-200 text-black text-sm lg:max-w-[75%] w-11/12 lg:p-1">
+                <span className="pl-2">
+                  {!selectedRoleFor && "Choose role..."}
+                  {selectedRoleFor}
+                </span>
+                <ChevronDownIcon className="h-6 inline"></ChevronDownIcon>
               </Listbox.Button>
             </div>
           </Listbox>
