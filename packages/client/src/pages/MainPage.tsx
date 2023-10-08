@@ -20,6 +20,7 @@ export function MainPage() {
   const [selectedRoleAgainst, setSelectedRoleAgainst] =
     useState<string>("Debater");
   const [messageCount, setMessageCount] = useState<number>(2);
+  const [warningVisible, setWarningVisible] = useState<boolean>(false);
 
   const fetchDebate = trpc.generateDebate.useMutation();
   const randomPlaceholder = trpc.randTopic.useQuery().data;
@@ -62,6 +63,7 @@ export function MainPage() {
       handleSend(submittedTopic.trim());
       setTopic(submittedTopic.trim());
       setSubmittedTopic("");
+      setWarningVisible(false);
     }
   };
   return (
@@ -75,6 +77,8 @@ export function MainPage() {
           setSelectedRoleFor={setSelectedRoleFor}
           messageCount={messageCount}
           setMessageCount={setMessageCount}
+          warningVisible={warningVisible}
+          setWarningVisible={setWarningVisible}
         />
         <div className="border h-[65vh] overflow-y-auto dark:border-gray-500 rounded-lg p-4 shadow-md grow">
           {messages.map((msg, index) => (
@@ -85,28 +89,41 @@ export function MainPage() {
               } py-1`}
             >
               {!msg.isRight && ( // Placing left side avatars before chat bubbles, and right side avatars after chat bubbles
-                <img
-                  src={leftAvatarUrl}
-                  alt="Profile Picture"
-                  className="w-8 h-8 rounded-full mr-2" // Adjust 'mr-2' as required for margin purposes
-                />
+                <div>
+                  <br></br>
+                  <img
+                    src={leftAvatarUrl}
+                    alt="Profile Picture"
+                    className="w-8 h-8 rounded-full mr-2" // Adjust 'mr-2' as required for margin purposes
+                  />
+                </div>
               )}
-              <div
-                className={`${
-                  msg.isRight
-                    ? "bg-blue-100 dark:bg-blue-950 dark:text-white"
-                    : "bg-gray-100 dark:bg-gray-800 dark:text-white"
-                } p-2 rounded-lg inline-block max-w-2xl`}
-              >
-                <TypingText text={msg.text} speed={5} />{" "}
-                {/* Speed can be adjusted to be faster/slower if needed - lower number is faster*/}
+              <div className="flex flex-col">
+                <span
+                  className={`${msg.isRight && "text-end"} mx-2 text-[#9ca3af]`}
+                >
+                  {msg.isRight ? selectedRoleFor : selectedRoleAgainst}
+                </span>
+                <div
+                  className={`${
+                    msg.isRight
+                      ? "bg-blue-100 dark:bg-blue-950 dark:text-white"
+                      : "bg-gray-100 dark:bg-gray-800 dark:text-white"
+                  } p-2 rounded-lg inline-block max-w-2xl`}
+                >
+                  <TypingText text={msg.text} speed={5} />{" "}
+                  {/* Speed can be adjusted to be faster/slower if needed - lower number is faster*/}
+                </div>
               </div>
               {msg.isRight && (
-                <img
-                  src={rightAvatarUrl}
-                  alt="Profile Picture"
-                  className="w-8 h-8 rounded-full ml-2" // Adjust 'ml-2' as required for margin purposes
-                />
+                <div>
+                  <br></br>
+                  <img
+                    src={rightAvatarUrl}
+                    alt="Profile Picture"
+                    className="w-8 h-8 rounded-full ml-2" // Adjust 'ml-2' as required for margin purposes
+                  />
+                </div>
               )}
             </div>
           ))}
@@ -138,7 +155,7 @@ export function MainPage() {
       <div className="flex justify-center">
         <form
           onSubmit={handleSubmit}
-          className="fixed shadow-lg lg:w-1/2 h-24 w-11/12 m-2 p-2 space-x-2 justify-center rounded-md bottom-0 bg-sky-100/75 dark:bg-gray-800/75 flex"
+          className="fixed shadow-lg lg:w-1/2 h-24 w-11/12 m-2 p-2 space-x-2 justify-center rounded-md bottom-0 bg-gray-100/75 dark:bg-gray-800/75 flex"
         >
           <textarea
             placeholder={
@@ -155,7 +172,7 @@ export function MainPage() {
             <button
               name="Submit"
               type="submit"
-              className="ml-auto self-end bg-blue-950 text-white rounded-lg"
+              className="ml-auto self-end bg-sky-700 hover:bg-sky-900 text-white rounded-lg"
             >
               Go!
             </button>
