@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import OptionsBar from "./OptionsBar.tsx";
 import "../index.css";
 import TypingText from "../assets/TypingText";
 import leftAvatar from "./left-avatar.jpg";
@@ -15,8 +16,13 @@ export function MainPage() {
   const [message, setMessage] = useState<string>("");
   const [topic, setTopic] = useState<string>("");
   const [submittedTopic, setSubmittedTopic] = useState<string>("");
+  const [selectedRoleFor, setSelectedRoleFor] = useState<string>("Debater");
+  const [selectedRoleAgainst, setSelectedRoleAgainst] =
+    useState<string>("Debater");
+  const [messageCount, setMessageCount] = useState<number>(2);
 
   const fetchDebate = trpc.generateDebate.useMutation();
+  const randomPlaceholder = trpc.randTopic.useQuery().data;
 
   const handleSend = async (topic: string) => {
     // if (message.trim() !== "") {
@@ -29,9 +35,9 @@ export function MainPage() {
     //   setMessage("");
     // }
     const response = await fetchDebate.mutateAsync({
-      role1: "debater",
-      role2: "debater",
-      messageCount: 2,
+      role1: selectedRoleFor,
+      role2: selectedRoleAgainst,
+      messageCount: messageCount as number,
       topic: topic,
       startingSide: "for",
     });
@@ -62,7 +68,15 @@ export function MainPage() {
     <>
       <div className="mx-auto lg:w-7/12 lg:min-w-[900px] mb-24 p-4">
         {/* <TestDebate></TestDebate> */}
-        <div className="border min-h-[65vh] overflow-y-auto dark:border-gray-500 rounded-lg p-4 shadow-md grow">
+        <OptionsBar
+          selectedRoleAgainst={selectedRoleAgainst}
+          setSelectedRoleAgainst={setSelectedRoleAgainst}
+          selectedRoleFor={selectedRoleFor}
+          setSelectedRoleFor={setSelectedRoleFor}
+          messageCount={messageCount}
+          setMessageCount={setMessageCount}
+        />
+        <div className="border h-[65vh] overflow-y-auto dark:border-gray-500 rounded-lg p-4 shadow-md grow">
           {messages.map((msg, index) => (
             <div
               key={index}
@@ -82,9 +96,9 @@ export function MainPage() {
                   msg.isRight
                     ? "bg-blue-100 dark:bg-blue-950 dark:text-white"
                     : "bg-gray-100 dark:bg-gray-800 dark:text-white"
-                } p-2 rounded-lg inline-block max-w-xl`}
+                } p-2 rounded-lg inline-block max-w-2xl`}
               >
-                <TypingText text={msg.text} speed={35} />{" "}
+                <TypingText text={msg.text} speed={5} />{" "}
                 {/* Speed can be adjusted to be faster/slower if needed - lower number is faster*/}
               </div>
               {msg.isRight && (
@@ -124,10 +138,12 @@ export function MainPage() {
       <div className="flex justify-center">
         <form
           onSubmit={handleSubmit}
-          className="fixed shadow-lg lg:w-1/2 lg:h-20 h-24 w-11/12 m-2 p-2 space-x-2 justify-center rounded-md bottom-0 bg-white/75 dark:bg-gray-800/75 flex"
+          className="fixed shadow-lg lg:w-1/2 h-24 w-11/12 m-2 p-2 space-x-2 justify-center rounded-md bottom-0 bg-sky-100/75 dark:bg-gray-800/75 flex"
         >
           <textarea
-            placeholder="Enter Topic Here...."
+            placeholder={
+              randomPlaceholder ? randomPlaceholder : "Enter Topic Here..."
+            }
             onChange={(e) => setSubmittedTopic(e.target.value)}
             value={submittedTopic}
             onKeyDown={(e) => {
@@ -135,13 +151,15 @@ export function MainPage() {
             }}
             className="resize-none max-w-screen-lg flex-grow box-border bg-transparent dark:text-white"
           ></textarea>
-          <button
-            name="Submit"
-            type="submit"
-            className="ml-auto self-end bg-blue-950 text-white mx-2 rounded-lg"
-          >
-            Go!
-          </button>
+          <div className="flex flex-col">
+            <button
+              name="Submit"
+              type="submit"
+              className="ml-auto self-end bg-blue-950 text-white rounded-lg"
+            >
+              Go!
+            </button>
+          </div>
         </form>
       </div>
     </>
