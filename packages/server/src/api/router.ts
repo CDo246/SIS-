@@ -3,6 +3,7 @@ import { openaiKey } from "../env";
 import { publicProcedure, router } from "./trpc";
 import OpenAI from "openai";
 import { z } from "zod";
+import { observable } from "@trpc/server/observable";
 
 const sideSchema = z.union([z.literal("for"), z.literal("against")]);
 
@@ -20,21 +21,42 @@ type ArgumentParams = z.infer<typeof argumentParamsSchema>;
 
 export const appRouter = router({
   greeting: publicProcedure.query(() => "hello tRPC v10!"),
-  generateDebate: publicProcedure
-    .input(argumentParamsSchema)
-    .mutation(async ({ input }) => {
-      const messages: DebateMessage[] = [];
-      for (let i = 0; i < input.messageCount * 2; i++) {
-        const nextMessage = await generateNextMessage(input, messages);
-        messages.push(nextMessage);
-        console.log(nextMessage.side);
-        console.log("thinking:", nextMessage.thinking);
-        console.log("---------------");
-        console.log(nextMessage.message);
-        console.log();
+  
+  generateDebateStream: publicProcedure.input(argumentParamsSchema).subscription(({input}) => {
+    return observable<DebateMessage>((emit) => {
+      const run = async () => {
+        const messages: DebateMessage[] = [];
+        for (let i = 0; i < input.messageCount * 2; i++) {
+          const nextMessage = await generateNextMessage(input, messages);
+          emit.next(nextMessage);
+          messages.push(nextMessage);
+          console.log(nextMessage.side);
+          console.log("thinking:", nextMessage.thinking);
+          console.log("---------------");
+          console.log(nextMessage.message);
+          console.log();
+        }
       }
-      return messages;
-    }),
+      run();
+    })
+  }),
+
+  // generateDebate: publicProcedure
+  //   .input(argumentParamsSchema)
+  //   .mutation(async ({ input }) => {
+  //     const messages: DebateMessage[] = [];
+  //     for (let i = 0; i < input.messageCount * 2; i++) {
+  //       const nextMessage = await generateNextMessage(input, messages);
+  //       messages.push(nextMessage);
+  //       console.log(nextMessage.side);
+  //       console.log("thinking:", nextMessage.thinking);
+  //       console.log("---------------");
+  //       console.log(nextMessage.message);
+  //       console.log();
+  //     }
+  //     return messages;
+  //   }),
+
   randTopic: publicProcedure.query(() => {
     return randomTopic();
   }),
