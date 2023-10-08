@@ -21,25 +21,27 @@ type ArgumentParams = z.infer<typeof argumentParamsSchema>;
 
 export const appRouter = router({
   greeting: publicProcedure.query(() => "hello tRPC v10!"),
-  
-  generateDebateStream: publicProcedure.input(argumentParamsSchema).subscription(({input}) => {
-    return observable<DebateMessage>((emit) => {
-      const run = async () => {
-        const messages: DebateMessage[] = [];
-        for (let i = 0; i < input.messageCount * 2; i++) {
-          const nextMessage = await generateNextMessage(input, messages);
-          emit.next(nextMessage);
-          messages.push(nextMessage);
-          console.log(nextMessage.side);
-          console.log("thinking:", nextMessage.thinking);
-          console.log("---------------");
-          console.log(nextMessage.message);
-          console.log();
-        }
-      }
-      run();
-    })
-  }),
+
+  generateDebateStream: publicProcedure
+    .input(argumentParamsSchema)
+    .subscription(({ input }) => {
+      return observable<DebateMessage>((emit) => {
+        const run = async () => {
+          const messages: DebateMessage[] = [];
+          for (let i = 0; i < input.messageCount * 2; i++) {
+            const nextMessage = await generateNextMessage(input, messages);
+            emit.next(nextMessage);
+            messages.push(nextMessage);
+            console.log(nextMessage.side);
+            console.log("thinking:", nextMessage.thinking);
+            console.log("---------------");
+            console.log(nextMessage.message);
+            console.log();
+          }
+        };
+        run();
+      });
+    }),
 
   // generateDebate: publicProcedure
   //   .input(argumentParamsSchema)

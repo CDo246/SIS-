@@ -5,8 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { trpc } from "./utils/trpc";
 import { createWSClient, httpBatchLink, wsLink } from "@trpc/client";
 
-const trpcHost = import.meta.env.DEV ? 'localhost:4000' : location.host;
-const secure = location.protocol === 'https:';
+const trpcHost = import.meta.env.DEV ? "localhost:4000" : location.host;
+const secure = location.protocol === "https:";
 
 function App() {
   const [queryClient] = useState(() => new QueryClient());
@@ -15,7 +15,7 @@ function App() {
       links: [
         wsLink({
           client: createWSClient({
-            url: `${secure ? 'wss' : 'ws'}://${trpcHost}/trpc/socket`,
+            url: `${secure ? "wss" : "ws"}://${trpcHost}/trpc/socket`,
           }),
         }),
       ],
