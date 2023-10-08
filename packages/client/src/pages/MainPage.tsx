@@ -4,7 +4,8 @@ import "../index.css";
 import TypingText from "../assets/TypingText";
 import leftAvatar from "./left-avatar.jpg";
 import rightAvatar from "./right-avatar.jpg";
-import { trpc } from "../utils/trpc";
+import { RouterInput, trpc } from "../utils/trpc";
+import { Router } from "@trpc/server";
 
 export function MainPage() {
   const leftAvatarUrl = leftAvatar; // Left and right side Avatar URLS can be adjusted here
@@ -13,7 +14,6 @@ export function MainPage() {
   const [messages, setMessages] = useState<
     { text: string; isRight: boolean; avatarUrl: string }[]
   >([]);
-  const [message, setMessage] = useState<string>("");
   const [topic, setTopic] = useState<string>("");
   const [submittedTopic, setSubmittedTopic] = useState<string>("");
   const [selectedRoleFor, setSelectedRoleFor] = useState<string>("Debater");
@@ -21,36 +21,38 @@ export function MainPage() {
     useState<string>("Debater");
   const [messageCount, setMessageCount] = useState<number>(2);
 
-  const fetchDebate = trpc.generateDebate.useMutation();
+  const [debateArgs, setDebateArgs] = useState<
+    RouterInput["generateDebateStream"] | null
+  >(null);
+  trpc.generateDebateStream.useSubscription(
+    debateArgs != null ? debateArgs : (null as any),
+    {
+      enabled: debateArgs != null,
+      onData: (message) => {
+        setMessages((messages) => {
+          return [
+            ...messages,
+            {
+              text: message.message,
+              isRight: message.side == "for",
+              avatarUrl: message.side == "for" ? rightAvatarUrl : leftAvatarUrl,
+            },
+          ];
+        });
+      },
+    },
+  );
   const randomPlaceholder = trpc.randTopic.useQuery().data;
 
   const handleSend = async (topic: string) => {
-    // if (message.trim() !== "") {
-    //   const newMessage = {
-    //     text: message,
-    //     isRight: messages.length % 2 === 0,
-    //     avatarUrl: messages.length % 2 === 0 ? rightAvatarUrl : leftAvatarUrl,
-    //   }; // Checking whether message is sent by right or left bot
-    //   setMessages([...messages, newMessage]);
-    //   setMessage("");
-    // }
-    const response = await fetchDebate.mutateAsync({
+    setMessages([]);
+    setDebateArgs({
       role1: selectedRoleFor,
       role2: selectedRoleAgainst,
       messageCount: messageCount as number,
       topic: topic,
       startingSide: "for",
     });
-
-    setMessages(
-      response.map((message) => {
-        return {
-          text: message.message,
-          isRight: message.side == "for",
-          avatarUrl: message.side == "for" ? rightAvatarUrl : leftAvatarUrl,
-        };
-      }),
-    );
   };
   const handleSubmit = (
     e:
@@ -67,7 +69,6 @@ export function MainPage() {
   return (
     <>
       <div className="mx-auto lg:w-7/12 lg:min-w-[900px] mb-24 p-4">
-        {/* <TestDebate></TestDebate> */}
         <OptionsBar
           selectedRoleAgainst={selectedRoleAgainst}
           setSelectedRoleAgainst={setSelectedRoleAgainst}
@@ -165,28 +166,3 @@ export function MainPage() {
     </>
   );
 }
-
-// function TestDebate() {
-//   return (
-//     <div>
-//       <button
-//         onClick={() => {
-//           fetchDebate.mutate({
-//             role1: "angry drunk",
-//             role2: "baby",
-//             messageCount: 2,
-//             topic: "New york pizza is superior to chicago pizza",
-//             startingSide: "for",
-//           });
-//         }}
-//       >
-//         generate debate
-//       </button>
-//       {fetchDebate.isLoading && <div>loading...</div>}
-//       {fetchDebate.error && <div>error</div>}
-//       {fetchDebate.data && (
-//         <pre>{JSON.stringify(fetchDebate.data, null, 2)}</pre>
-//       )}
-//     </div>
-//   );
-// }
