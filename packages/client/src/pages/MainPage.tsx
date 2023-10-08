@@ -25,15 +25,6 @@ export function MainPage() {
   const randomPlaceholder = trpc.randTopic.useQuery().data;
 
   const handleSend = async (topic: string) => {
-    // if (message.trim() !== "") {
-    //   const newMessage = {
-    //     text: message,
-    //     isRight: messages.length % 2 === 0,
-    //     avatarUrl: messages.length % 2 === 0 ? rightAvatarUrl : leftAvatarUrl,
-    //   }; // Checking whether message is sent by right or left bot
-    //   setMessages([...messages, newMessage]);
-    //   setMessage("");
-    // }
     const response = await fetchDebate.mutateAsync({
       role1: selectedRoleFor,
       role2: selectedRoleAgainst,
@@ -67,7 +58,6 @@ export function MainPage() {
   return (
     <>
       <div className="mx-auto lg:w-7/12 lg:min-w-[900px] mb-24 p-4">
-        {/* <TestDebate></TestDebate> */}
         <OptionsBar
           selectedRoleAgainst={selectedRoleAgainst}
           setSelectedRoleAgainst={setSelectedRoleAgainst}
@@ -165,28 +155,3 @@ export function MainPage() {
     </>
   );
 }
-
-// function TestDebate() {
-//   return (
-//     <div>
-//       <button
-//         onClick={() => {
-//           fetchDebate.mutate({
-//             role1: "angry drunk",
-//             role2: "baby",
-//             messageCount: 2,
-//             topic: "New york pizza is superior to chicago pizza",
-//             startingSide: "for",
-//           });
-//         }}
-//       >
-//         generate debate
-//       </button>
-//       {fetchDebate.isLoading && <div>loading...</div>}
-//       {fetchDebate.error && <div>error</div>}
-//       {fetchDebate.data && (
-//         <pre>{JSON.stringify(fetchDebate.data, null, 2)}</pre>
-//       )}
-//     </div>
-//   );
-// }

@@ -4,6 +4,8 @@ import express from "express";
 import { appRouter } from "./api/router";
 import cors from "cors";
 import path from "path";
+import { applyWSSHandler } from "@trpc/server/adapters/ws";
+import ws from "ws";
 
 // created for each request
 const createContext = ({
@@ -35,4 +37,33 @@ app.get("*", function (request, response) {
   response.sendFile(path.resolve(__dirname, "dist/index.html"));
 });
 
-app.listen(4000);
+const server = app.listen(4000);
+
+//websocket stuff
+
+const websocketServer = new ws.Server({
+  noServer: true,
+  path: "/trpc/socket",
+});
+
+const handler = applyWSSHandler({ wss: websocketServer, router: appRouter });
+
+server.on("upgrade", (request, socket, head) => {
+  websocketServer.handleUpgrade(request, socket, head, (websocket) => {
+    websocketServer.emit("connection", websocket, request);
+  });
+});
+
+process.on("SIGTERM", () => {
+  console.log("SIGTERM");
+  handler.broadcastReconnectNotification();
+  websocketServer.close();
+  console.log("Server killed, broadcasting reconnect notification");
+});
+
+websocketServer.on("connection", (ws) => {
+  console.log(`➕➕ Connection (${websocketServer.clients.size})`);
+  ws.once("close", () => {
+    console.log(`➖➖ Connection (${websocketServer.clients.size})`);
+  });
+});
