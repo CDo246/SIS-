@@ -54,7 +54,7 @@ export default function OptionsBar(props: {
           leave="transition-opacity duration-150"
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
-          className="lg:space-y-0 lg:-mx-2 space-y-2 p-2 mx-auto lg:mx-[initial] flex flex-col lg:flex-row lg:justify-between lg:w-[100%] w-[85%] md:h-fit lg:h-14 lg:rounded-t-lg rounded-lg lg:rounded-bl-none bg-white/90 dark:bg-gray-800/90 shadow-lg"
+          className="lg:space-y-0 lg:-mx-2 space-y-2 p-2 mx-auto lg:mx-[initial] flex flex-col lg:flex-row lg:justify-between lg:w-[100%] w-[85%] md:h-fit lg:h-14 lg:rounded-tr-lg rounded-lg lg:rounded-none bg-white/90 dark:bg-gray-800/90 shadow-lg"
         >
           <Listbox
             value={props.selectedRoleAgainst}
@@ -177,7 +177,7 @@ export default function OptionsBar(props: {
             </div>
           </Listbox>
           {props.warningVisible && (
-            <span className="fixed border-x-0 rounded-b-lg rounded-t-lg lg:rounded-t-none lg:top-36 sm:top-[23rem] top-[26rem] left-0 right-0 lg:left-[initial] lg:right-[initial] mx-auto lg:-ml-2 w-[85%] lg:w-[initial] p-2 text-[#9ca3af] dark:bg-gray-800/90 bg-white/90">
+            <span className="fixed border-x-0 rounded-t-lg rounded-b-lg lg:rounded-none lg:top-36 sm:top-[23rem] top-[26rem] left-0 right-0 lg:left-[initial] lg:right-[initial] mx-auto lg:-ml-2 w-[85%] lg:w-[initial] p-2 text-[#9ca3af] dark:bg-gray-800/90 bg-white/90">
               These changes will take effect when a new debate is generated.
             </span>
           )}
