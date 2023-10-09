@@ -43,13 +43,17 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
+button:hover:enabled {
+  background-color: #0c4a6e;
   border-color: #646cff;
   outline-width: 10px;
 }
 button:focus,
 button:focus-visible {
   outline: 8px auto -webkit-focus-ring-color;
+}
+button:disabled {
+  background-color: #9ca3af;
 }
 
 @media (prefers-color-scheme: light) {

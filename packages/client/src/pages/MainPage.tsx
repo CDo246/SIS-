@@ -4,6 +4,7 @@ import "../index.css";
 import TypingText from "../assets/TypingText";
 import leftAvatar from "./left-avatar.jpg";
 import rightAvatar from "./right-avatar.jpg";
+import { ArrowPathIcon } from "@heroicons/react/24/solid";
 import { trpc } from "../utils/trpc";
 
 export function MainPage() {
@@ -21,6 +22,7 @@ export function MainPage() {
     useState<string>("Debater");
   const [messageCount, setMessageCount] = useState<number>(2);
   const [warningVisible, setWarningVisible] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const fetchDebate = trpc.generateDebate.useMutation();
   const randomPlaceholder = trpc.randTopic.useQuery().data;
@@ -58,6 +60,7 @@ export function MainPage() {
         };
       }),
     );
+    setIsLoading(false);
   };
   const handleSubmit = (
     e:
@@ -66,6 +69,7 @@ export function MainPage() {
   ) => {
     e.preventDefault();
     if (submittedTopic) {
+      setIsLoading(true);
       handleSend(submittedTopic.trim());
       setTopic(submittedTopic.trim());
       setSubmittedTopic("");
@@ -87,7 +91,13 @@ export function MainPage() {
             warningVisible={warningVisible}
             setWarningVisible={setWarningVisible}
           />
-          <div className="border overflow-y-auto dark:border-gray-500 rounded-lg p-4 shadow-md grow fixed lg:w-7/12 mx-auto lg:min-w-[900px] w-full max-h-full top-20 bottom-36 inset-x-0">
+          <div className="border overflow-y-auto dark:border-gray-500 rounded-lg p-4 shadow-md grow fixed lg:w-7/12 mx-auto lg:min-w-[900px] w-full max-h-full top-20 bottom-40 inset-x-0">
+            {isLoading && (
+              <div>
+                <br />
+                <ArrowPathIcon className="dark:text-sky-100 text-sky-700 w-9 mx-auto motion-safe:animate-spin"></ArrowPathIcon>
+              </div>
+            )}
             {messages.map((msg, index) => (
               <div
                 key={index}
@@ -166,12 +176,13 @@ export function MainPage() {
         <div className="flex justify-center h-24 mt-2">
           <form
             onSubmit={handleSubmit}
-            className="absolute shadow-lg lg:w-1/2 h-24 w-11/12 m-2 p-2 space-x-2 justify-center rounded-md bottom-0 bg-gray-100/75 dark:bg-gray-800/75 flex"
+            className="absolute shadow-lg lg:w-1/2 h-24 w-11/12 m-2 p-2 space-x-2 justify-center rounded-md bottom-0 dark:bg-gray-800 flex"
           >
             <textarea
               placeholder={
                 randomPlaceholder ? randomPlaceholder : "Enter Topic Here..."
               }
+              disabled={isLoading}
               onChange={(e) => setSubmittedTopic(e.target.value)}
               value={submittedTopic}
               onKeyDown={(e) => {
@@ -183,7 +194,8 @@ export function MainPage() {
               <button
                 name="Submit"
                 type="submit"
-                className="ml-auto self-end bg-sky-700 hover:bg-sky-900 text-white rounded-lg"
+                disabled={isLoading}
+                className={"bg-sky-700 ml-auto self-end text-white rounded-lg"}
               >
                 Go!
               </button>
