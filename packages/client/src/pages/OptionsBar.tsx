@@ -4,6 +4,7 @@ import {
   Cog6ToothIcon,
   XMarkIcon,
   ChevronDownIcon,
+  ArrowPathIcon,
 } from "@heroicons/react/24/solid";
 import { trpc } from "../utils/trpc";
 
@@ -85,6 +86,11 @@ export default function OptionsBar(props: {
                 className="absolute left-0 lg:-ml-4 top-16 lg:top-0 w-full z-40"
               >
                 <Listbox.Options className="lg:space-y-0 space-y-3 lg:mt-12 z-40 max-h-56 rounded-b-md overflow-y-auto bg-white">
+                  {!roles && (
+                    <div className="h-9 flex align-center overflow-hidden">
+                      <ArrowPathIcon className="text-sky-700 w-9 mx-auto motion-safe:animate-spin"></ArrowPathIcon>
+                    </div>
+                  )}
                   {roles &&
                     roles.map((role) => (
                       <Listbox.Option
@@ -148,6 +154,11 @@ export default function OptionsBar(props: {
                 className="absolute right-0 top-16 lg:top-0 w-full z-40"
               >
                 <Listbox.Options className="lg:space-y-0 space-y-3 lg:mt-12 z-40 max-h-56 rounded-b-md overflow-y-auto bg-white">
+                  {!roles && (
+                    <div className="h-9 flex align-center overflow-hidden">
+                      <ArrowPathIcon className="text-sky-700 w-9 mx-auto motion-safe:animate-spin"></ArrowPathIcon>
+                    </div>
+                  )}
                   {roles &&
                     roles.map((role) => (
                       <Listbox.Option
