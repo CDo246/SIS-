@@ -23,6 +23,7 @@ export function MainPage() {
   const [messageCount, setMessageCount] = useState<number>(2);
   const [warningVisible, setWarningVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isEmpty, setIsEmpty] = useState<boolean>(true);
 
   const [debateArgs, setDebateArgs] = useState<
     RouterInput["generateDebateStream"] | null
@@ -42,7 +43,6 @@ export function MainPage() {
             },
           ];
         });
-        setIsLoading(false);
       },
     },
   );
@@ -72,6 +72,7 @@ export function MainPage() {
     e.preventDefault();
     if (submittedTopic) {
       setIsLoading(true);
+      setIsEmpty(true);
       handleSend(submittedTopic.trim());
       setTopic(submittedTopic.trim());
       setSubmittedTopic("");
@@ -94,9 +95,9 @@ export function MainPage() {
             setWarningVisible={setWarningVisible}
           />
           <div className="border overflow-y-auto dark:border-gray-500 rounded-lg p-4 shadow-md grow fixed lg:w-7/12 mx-auto lg:min-w-[900px] w-full max-h-full top-20 bottom-40 inset-x-0">
-            {isLoading && (
+            {isLoading && isEmpty && (
               <div>
-                <br />
+                <br></br>
                 <ArrowPathIcon className="dark:text-sky-100 text-sky-700 w-9 mx-auto motion-safe:animate-spin"></ArrowPathIcon>
               </div>
             )}
@@ -132,7 +133,14 @@ export function MainPage() {
                         : "bg-gray-100 dark:bg-gray-800 dark:text-white"
                     } p-2 rounded-lg inline-block max-w-2xl`}
                   >
-                    <TypingText text={msg.text} speed={5} />{" "}
+                    <TypingText
+                      text={msg.text}
+                      speed={5}
+                      messageCount={messageCount}
+                      messageIndex={index}
+                      setIsLoading={setIsLoading}
+                      setIsEmpty={setIsEmpty}
+                    />{" "}
                     {/* Speed can be adjusted to be faster/slower if needed - lower number is faster*/}
                   </div>
                 </div>
