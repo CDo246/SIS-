@@ -48,7 +48,8 @@ export function MainPage() {
   );
   const randomPlaceholder = trpc.randTopic.useQuery().data;
 
-  useEffect(() => { //when the MainPage component is rendered, prevent the screen from scrolling
+  useEffect(() => {
+    //when the MainPage component is rendered, prevent the screen from scrolling
     document.getElementById("root")!.className = "flex flex-col h-screen";
     return () => {
       document.getElementById("root")!.className = "";
