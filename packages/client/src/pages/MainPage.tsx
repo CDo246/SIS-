@@ -23,7 +23,7 @@ export function MainPage() {
   const [messageCount, setMessageCount] = useState<number>(2);
   const [warningVisible, setWarningVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isEmpty, setIsEmpty] = useState<boolean>(true);
+  const [messageLoading, setMessageLoading] = useState<boolean>(true);
 
   const [debateArgs, setDebateArgs] = useState<
     RouterInput["generateDebateStream"] | null
@@ -48,7 +48,7 @@ export function MainPage() {
   );
   const randomPlaceholder = trpc.randTopic.useQuery().data;
 
-  useEffect(() => {
+  useEffect(() => { //when the MainPage component is rendered, prevent the screen from scrolling
     document.getElementById("root")!.className = "flex flex-col h-screen";
     return () => {
       document.getElementById("root")!.className = "";
@@ -72,7 +72,7 @@ export function MainPage() {
     e.preventDefault();
     if (submittedTopic) {
       setIsLoading(true);
-      setIsEmpty(true);
+      setMessageLoading(true);
       handleSend(submittedTopic.trim());
       setTopic(submittedTopic.trim());
       setSubmittedTopic("");
@@ -95,12 +95,6 @@ export function MainPage() {
             setWarningVisible={setWarningVisible}
           />
           <div className="border overflow-y-auto dark:border-gray-500 rounded-lg p-4 shadow-md grow fixed lg:w-7/12 mx-auto lg:min-w-[900px] w-full max-h-full top-20 bottom-40 inset-x-0">
-            {isLoading && isEmpty && (
-              <div>
-                <br></br>
-                <ArrowPathIcon className="dark:text-sky-100 text-sky-700 w-9 mx-auto motion-safe:animate-spin"></ArrowPathIcon>
-              </div>
-            )}
             {messages.map((msg, index) => (
               <div
                 key={index}
@@ -139,7 +133,7 @@ export function MainPage() {
                       messageCount={messageCount}
                       messageIndex={index}
                       setIsLoading={setIsLoading}
-                      setIsEmpty={setIsEmpty}
+                      setMessageLoading={setMessageLoading}
                     />{" "}
                     {/* Speed can be adjusted to be faster/slower if needed - lower number is faster*/}
                   </div>
@@ -156,6 +150,12 @@ export function MainPage() {
                 )}
               </div>
             ))}
+            {isLoading && messageLoading && (
+              <div>
+                <br></br>
+                <ArrowPathIcon className="dark:text-sky-100 text-sky-700 w-9 mx-auto motion-safe:animate-spin"></ArrowPathIcon>
+              </div>
+            )}
           </div>
           {/* <div className="mt-4">
             <input

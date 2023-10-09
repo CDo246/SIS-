@@ -1,3 +1,4 @@
+import { ArrowPathIcon } from "@heroicons/react/24/solid";
 import React, { useState, useEffect } from "react";
 // Inputs
 // text: Desired text to display
@@ -8,13 +9,13 @@ function TypingText(props: {
   messageCount: number;
   messageIndex: number;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsEmpty: React.Dispatch<React.SetStateAction<boolean>>;
+  setMessageLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [displayedText, setDisplayedText] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    props.setIsEmpty(false);
+    props.setMessageLoading(false);
     const typingInterval = setInterval(() => {
       if (currentIndex < props.text.length) {
         setDisplayedText(props.text.slice(0, currentIndex + 1));
@@ -23,13 +24,14 @@ function TypingText(props: {
         clearInterval(typingInterval);
         if (props.messageIndex + 1 == 2 * props.messageCount)
           props.setIsLoading(false);
+        else props.setMessageLoading(true);
       }
     }, props.speed);
 
     return () => {
       clearInterval(typingInterval);
     };
-  }, [currentIndex, props.text, props.speed, props]);
+  }, [currentIndex, props.text, props.speed]);
 
   return <span>{displayedText}</span>;
 }
