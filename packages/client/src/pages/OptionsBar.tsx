@@ -33,13 +33,12 @@ export default function OptionsBar(props: {
           onClick={() => props.setIsOpen(!props.isOpen)}
           className="flex align-center pointer-events-auto shadow-xl justify-center bg-opacity-20 text-sm dark:text-gray-300 hover:bg-opacity-30 focus:outline-none focus-visible:ring-1 focus-visible:ring-white focus-visible:ring-opacity-75 px-0 ml-8 lg:ml-0 py-0 w-9"
         >
-          {!props.isOpen && (
+          {!props.isOpen ? (
             <Cog6ToothIcon
               className="w-9 h-9 dark:bg-gray-800/90 bg-gray-100/90 text-sky-700 hover:text-sky-900 dark:text-gray-300 dark:hover:text-gray-400 rounded-lg"
               title="Options"
             />
-          )}
-          {props.isOpen && (
+          ) : (
             <XMarkIcon
               className="w-9 h-9 dark:bg-gray-800/90 bg-gray-100/90 text-sky-700 hover:text-sky-900 dark:text-gray-300 dark:hover:text-gray-400 rounded-lg"
               title="Close"
@@ -70,10 +69,11 @@ export default function OptionsBar(props: {
               </Listbox.Label>
               <Listbox.Button className="flex justify-between items-center text-left bg-sky-100 text-black text-sm lg:max-w-[75%] w-11/12 lg:p-1">
                 <span className="pl-2">
-                  {!props.selectedRoleAgainst && "Choose role..."}
-                  {props.selectedRoleAgainst}
+                  {props.selectedRoleAgainst
+                    ? props.selectedRoleAgainst
+                    : "Choose role..."}
                 </span>
-                <ChevronDownIcon className="h-6 inline"></ChevronDownIcon>
+                <ChevronDownIcon className="h-6 inline" />
               </Listbox.Button>
               <Transition
                 appear
@@ -86,12 +86,7 @@ export default function OptionsBar(props: {
                 className="absolute left-0 lg:-ml-4 top-16 lg:top-0 w-full z-40"
               >
                 <Listbox.Options className="lg:space-y-0 space-y-3 lg:mt-12 z-40 max-h-56 rounded-b-md overflow-y-auto bg-white">
-                  {!roles && (
-                    <div className="h-9 flex align-center overflow-hidden">
-                      <ArrowPathIcon className="text-sky-700 w-9 mx-auto motion-safe:animate-spin"></ArrowPathIcon>
-                    </div>
-                  )}
-                  {roles &&
+                  {roles ? (
                     roles.map((role) => (
                       <Listbox.Option
                         key={role}
@@ -104,7 +99,12 @@ export default function OptionsBar(props: {
                       >
                         {role}
                       </Listbox.Option>
-                    ))}
+                    ))
+                  ) : (
+                    <div className="h-9 flex align-center overflow-hidden">
+                      <ArrowPathIcon className="text-sky-700 w-9 mx-auto motion-safe:animate-spin" />
+                    </div>
+                  )}
                 </Listbox.Options>
               </Transition>
             </div>
@@ -154,12 +154,7 @@ export default function OptionsBar(props: {
                 className="absolute right-0 top-16 lg:top-0 w-full z-40"
               >
                 <Listbox.Options className="lg:space-y-0 space-y-3 lg:mt-12 z-40 max-h-56 rounded-b-md overflow-y-auto bg-white">
-                  {!roles && (
-                    <div className="h-9 flex align-center overflow-hidden">
-                      <ArrowPathIcon className="text-sky-700 w-9 mx-auto motion-safe:animate-spin"></ArrowPathIcon>
-                    </div>
-                  )}
-                  {roles &&
+                  {roles ? (
                     roles.map((role) => (
                       <Listbox.Option
                         key={role}
@@ -172,7 +167,12 @@ export default function OptionsBar(props: {
                       >
                         {role}
                       </Listbox.Option>
-                    ))}
+                    ))
+                  ) : (
+                    <div className="h-9 flex align-center overflow-hidden">
+                      <ArrowPathIcon className="text-sky-700 w-9 mx-auto motion-safe:animate-spin" />
+                    </div>
+                  )}
                 </Listbox.Options>
               </Transition>
               <Listbox.Label className="dark:text-white font-bold sm:pb-0 text-end lg:mr-2">
@@ -180,10 +180,11 @@ export default function OptionsBar(props: {
               </Listbox.Label>
               <Listbox.Button className="flex justify-between items-center text-left bg-sky-100 text-black text-sm lg:max-w-[75%] w-11/12 lg:p-1">
                 <span className="pl-2">
-                  {!props.selectedRoleFor && "Choose role..."}
-                  {props.selectedRoleFor}
+                  {props.selectedRoleFor
+                    ? props.selectedRoleFor
+                    : "Choose role..."}
                 </span>
-                <ChevronDownIcon className="h-6 inline"></ChevronDownIcon>
+                <ChevronDownIcon className="h-6 inline" />
               </Listbox.Button>
             </div>
           </Listbox>

@@ -4,7 +4,7 @@ import "../index.css";
 import TypingText from "../assets/TypingText";
 import leftAvatar from "./left-avatar.jpg";
 import rightAvatar from "./right-avatar.jpg";
-import { ArrowPathIcon } from "@heroicons/react/24/solid";
+import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import { RouterInput, trpc } from "../utils/trpc";
 import { Router } from "@trpc/server";
 
@@ -22,6 +22,7 @@ export function MainPage() {
   const [selectedRoleAgainst, setSelectedRoleAgainst] =
     useState<string>("Debater");
   const [messageCount, setMessageCount] = useState<number>(2);
+  const [currentCount, setCurrentCount] = useState<number>(0);
   const [warningVisible, setWarningVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<number>(0); // 0: not loading, 1: loading debate, 2: waiting for text to display
 
@@ -137,6 +138,7 @@ export function MainPage() {
                       text={msg.text}
                       speed={5}
                       messageCount={messageCount}
+                      setCurrentCount={setCurrentCount}
                       messageIndex={index}
                       setIsLoading={setIsLoading}
                     />{" "}
@@ -146,9 +148,51 @@ export function MainPage() {
               </div>
             ))}
             {isLoading == 1 && (
-              <div>
-                <br></br>
-                <ArrowPathIcon className="dark:text-sky-100 text-sky-700 w-9 mx-auto motion-safe:animate-spin"></ArrowPathIcon>
+              // Loading text bubbles
+              <div
+                className={`flex ${
+                  currentCount % 2 == 0 ? "justify-end" : "justify-start"
+                } py-1`}
+              >
+                {
+                  // Placing left side avatars before chat bubbles, and right side avatars after chat bubbles
+                  <div
+                    className={`${
+                      currentCount % 2 == 0 && "order-last"
+                    } min-w-fit`}
+                  >
+                    <br></br>
+                    <img
+                      src={
+                        currentCount % 2 == 0 ? rightAvatarUrl : leftAvatarUrl
+                      }
+                      alt="Profile Picture"
+                      className={`${
+                        currentCount % 2 == 0 ? "ml-2" : "mr-2"
+                      } w-8 h-8 rounded-full`} // Adjust 'ml-2' and 'mr-2' as required for margin purposes
+                    />
+                  </div>
+                }
+                <div className="flex flex-col">
+                  <span
+                    className={`${
+                      currentCount % 2 == 0 && "text-end"
+                    } mx-2 text-[#9ca3af]`}
+                  >
+                    {currentCount % 2 == 0
+                      ? selectedRoleFor
+                      : selectedRoleAgainst}
+                  </span>
+                  <div
+                    className={`${
+                      currentCount % 2 == 0
+                        ? "bg-blue-100 dark:bg-blue-950 dark:text-white"
+                        : "bg-gray-100 dark:bg-gray-800 dark:text-white"
+                    } p-2 rounded-lg inline-block max-w-2xl`}
+                  >
+                    <EllipsisHorizontalIcon className="h-8 mx-auto motion-safe:animate-pulse" />{" "}
+                  </div>
+                </div>
               </div>
             )}
           </div>

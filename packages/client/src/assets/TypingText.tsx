@@ -6,6 +6,7 @@ function TypingText(props: {
   text: string;
   speed: number;
   messageCount: number;
+  setCurrentCount: React.Dispatch<React.SetStateAction<number>>;
   messageIndex: number;
   setIsLoading: React.Dispatch<React.SetStateAction<number>>;
 }) {
@@ -20,6 +21,7 @@ function TypingText(props: {
         setCurrentIndex(currentIndex + 1);
       } else {
         clearInterval(typingInterval);
+        props.setCurrentCount(props.messageIndex + 1);
         if (props.messageIndex + 1 == 2 * props.messageCount)
           // check if final message
           props.setIsLoading(0);
@@ -29,7 +31,6 @@ function TypingText(props: {
 
     return () => {
       clearInterval(typingInterval);
-      console.log("message " + props.messageIndex + " complete");
     };
   }, [currentIndex, props.text, props.speed]);
 
