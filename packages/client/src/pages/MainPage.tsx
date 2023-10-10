@@ -8,8 +8,7 @@ import { RouterInput, trpc } from "../utils/trpc";
 import { Router } from "@trpc/server";
 
 export function MainPage() {
-  const leftAvatarUrl = leftAvatar; // Left and right side Avatar URLS can be adjusted here
-  const rightAvatarUrl = rightAvatar;
+  const roleAvatars: { [key: string]: string } | undefined = trpc.roleAvatars.useQuery().data;
 
   const [messages, setMessages] = useState<
     { text: string; isRight: boolean; avatarUrl: string }[]
@@ -20,6 +19,19 @@ export function MainPage() {
   const [selectedRoleAgainst, setSelectedRoleAgainst] =
     useState<string>("Debater");
   const [messageCount, setMessageCount] = useState<number>(2);
+
+  let leftAvatarUrl = '/images/default.jpg';
+  let rightAvatarUrl = '/images/default.jpg';
+  if (roleAvatars && selectedRoleAgainst) {
+    leftAvatarUrl = selectedRoleAgainst === 'Debater' || !selectedRoleAgainst
+      ? '/images/default.jpg'
+      : `/images/${roleAvatars[selectedRoleAgainst]}`; 
+  }
+  if (roleAvatars && selectedRoleFor) {
+    rightAvatarUrl = selectedRoleFor === 'Debater' || !selectedRoleFor
+      ? '/images/default.jpg'
+      : `/images/${roleAvatars[selectedRoleFor]}`; 
+  }
 
   const [debateArgs, setDebateArgs] = useState<
     RouterInput["generateDebateStream"] | null
@@ -66,6 +78,7 @@ export function MainPage() {
       setSubmittedTopic("");
     }
   };
+
   return (
     <>
       <div className="mx-auto lg:w-7/12 lg:min-w-[900px] mb-24 p-4">
