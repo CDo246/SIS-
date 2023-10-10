@@ -84,7 +84,9 @@ export function About() {
           topic of interest.
         </p>
       </div>
-      <h1 className="text-3xl font-bold mb-4 dark:text-sky-400">Frequently Asked Questions (FAQ)</h1>
+      <h1 className="text-3xl font-bold mb-4 dark:text-sky-400">
+        Frequently Asked Questions (FAQ)
+      </h1>
       <div className="space-y-4">
         <Accordion
           title="What AI model is used for DeBot?"

@@ -25,7 +25,6 @@ const Accordion: React.FC<AccordionProps> = ({ title, content }) => {
         className="w-full p-4 text-left focus:outline-none text-white flex justify-between items-center"
         onClick={toggleAccordion}
       >
-
         {title}
         <div dangerouslySetInnerHTML={{ __html: downArrow }} />
       </button>

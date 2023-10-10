@@ -40,7 +40,7 @@ export function MainPage() {
           ];
         });
       },
-    },
+    }
   );
   const randomPlaceholder = trpc.randTopic.useQuery().data;
 
