@@ -1,6 +1,8 @@
+import Accordion from "../assets/Accordion";
+
 export function About() {
   return (
-    <div className="mx-auto lg:w-7/12 lg:min-w-[900px] mb-24 p-4">
+    <div className="mx-auto lg:w-7/12 lg:min-w-[900px] mb-24 p-4 space-y-4">
       <h1 className="text-3xl font-bold mb-4 dark:text-sky-400">About Us</h1>
       <div className="space-y-4">
         <p className="dark:text-white my-2">
@@ -54,6 +56,52 @@ export function About() {
             intended.
           </p>
         </li>
+
+        <li className="flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="#60A5FA"
+            className="w-5 h-5"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
+              clip-rule="evenodd"
+            />
+          </svg>
+
+          <p className="dark:text-white my-2 ml-2">
+            Caution should be exercised if the AI uses statistics or data in
+            their arguments, as they may be inaccurate or nonsensical for
+            complex queries, but be made to sound plausible for their argument.
+          </p>
+        </li>
+
+        <p className="dark:text-white my-2">
+          The arguments generated is intended for personal purposes, such as to
+          enhance one's debating skills or to gather general information about a
+          topic of interest.
+        </p>
+      </div>
+      <h1 className="text-3xl font-bold mb-4 dark:text-sky-400">Frequently Asked Questions (FAQ)</h1>
+      <div className="space-y-4">
+        <Accordion
+          title="What AI model is used for DeBot?"
+          content="Both the debaters for DeBot are using ChatGPT-4"
+        />
+        <Accordion
+          title="Why is the debater's response to the topic different than intended?"
+          content="There may be many reasons as to why the response may not appear as intended, but it is most likely due to how the topic was phrased. Users should phrase their topics in a way so that there is a clear for/against side, otherwise the AI may fail to interpret the intended meaning"
+        />
+        <Accordion
+          title="How can I tell which side is arguing for and which is against?"
+          content="The messages from the right-side debater will be arguing for the user topic, and the left-side debater will be arguing against the topic."
+        />
+        <Accordion
+          title="Is AI debating fair and unbiased?"
+          content="There are data preprocessing algorithms in place to ensure that the arguments are fair and make sense, but there may be bias in order to suit the AI debater's personality preset, or through the data that the model (GPT-4) is trained on. "
+        />
       </div>
     </div>
   );
