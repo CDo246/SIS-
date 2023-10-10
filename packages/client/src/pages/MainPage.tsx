@@ -15,6 +15,7 @@ export function MainPage() {
   const [messages, setMessages] = useState<
     { text: string; isRight: boolean; avatarUrl: string }[]
   >([]);
+  const [isOpen, setIsOpen] = useState(false);
   const [topic, setTopic] = useState<string>("");
   const [submittedTopic, setSubmittedTopic] = useState<string>("");
   const [selectedRoleFor, setSelectedRoleFor] = useState<string>("Debater");
@@ -72,6 +73,7 @@ export function MainPage() {
   ) => {
     e.preventDefault();
     if (submittedTopic) {
+      setIsOpen(false);
       setIsLoading(true);
       setMessageLoading(true);
       handleSend(submittedTopic.trim());
@@ -86,6 +88,8 @@ export function MainPage() {
         <div className="flex-grow p-4">
           {/* <TestDebate></TestDebate> */}
           <OptionsBar
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
             selectedRoleAgainst={selectedRoleAgainst}
             setSelectedRoleAgainst={setSelectedRoleAgainst}
             selectedRoleFor={selectedRoleFor}

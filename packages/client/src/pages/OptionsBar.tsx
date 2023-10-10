@@ -1,5 +1,4 @@
 import { Listbox, Transition } from "@headlessui/react";
-import { useState } from "react";
 import {
   Cog6ToothIcon,
   XMarkIcon,
@@ -9,6 +8,8 @@ import {
 import { trpc } from "../utils/trpc";
 
 export default function OptionsBar(props: {
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   selectedRoleAgainst: string;
   setSelectedRoleAgainst: React.Dispatch<React.SetStateAction<string>>;
   selectedRoleFor: string;
@@ -18,28 +19,27 @@ export default function OptionsBar(props: {
   warningVisible: boolean;
   setWarningVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const [isOpen, setIsOpen] = useState(false);
   const roles: string[] | undefined = trpc.roles.useQuery().data;
 
   return (
     <>
       <div
         className={`${
-          !isOpen && "pointer-events-none"
+          !props.isOpen && "pointer-events-none"
         } flex fixed left-0 right-0 mx-auto lg:flex-row z-40 flex-col lg:w-[54%] w-screen lg:min-w-[825px] my-5 lg:my-2 lg:h-14 lg:items-center lg:space-x-4 lg:space-y-0 space-y-4 lg:justify-between justify-center align-start`}
       >
         <button
           type="button"
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => props.setIsOpen(!props.isOpen)}
           className="flex align-center pointer-events-auto shadow-xl justify-center bg-opacity-20 text-sm dark:text-gray-300 hover:bg-opacity-30 focus:outline-none focus-visible:ring-1 focus-visible:ring-white focus-visible:ring-opacity-75 px-0 ml-8 lg:ml-0 py-0 w-9"
         >
-          {!isOpen && (
+          {!props.isOpen && (
             <Cog6ToothIcon
               className="w-9 h-9 dark:bg-gray-800/90 bg-gray-100/90 text-sky-700 hover:text-sky-900 dark:text-gray-300 dark:hover:text-gray-400 rounded-lg"
               title="Options"
             />
           )}
-          {isOpen && (
+          {props.isOpen && (
             <XMarkIcon
               className="w-9 h-9 dark:bg-gray-800/90 bg-gray-100/90 text-sky-700 hover:text-sky-900 dark:text-gray-300 dark:hover:text-gray-400 rounded-lg"
               title="Close"
@@ -48,7 +48,7 @@ export default function OptionsBar(props: {
         </button>
         <Transition
           appear
-          show={isOpen}
+          show={props.isOpen}
           enter="transition-opacity duration-75"
           enterFrom="opacity-0"
           enterTo="opacity-100"
