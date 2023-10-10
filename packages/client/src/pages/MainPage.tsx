@@ -23,8 +23,7 @@ export function MainPage() {
     useState<string>("Debater");
   const [messageCount, setMessageCount] = useState<number>(2);
   const [warningVisible, setWarningVisible] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [messageLoading, setMessageLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<number>(0); // 0: not loading, 1: loading debate, 2: waiting for text to display
 
   const [debateArgs, setDebateArgs] = useState<
     RouterInput["generateDebateStream"] | null
@@ -74,8 +73,7 @@ export function MainPage() {
     e.preventDefault();
     if (submittedTopic) {
       setIsOpen(false);
-      setIsLoading(true);
-      setMessageLoading(true);
+      setIsLoading(1);
       handleSend(submittedTopic.trim());
       setTopic(submittedTopic.trim());
       setSubmittedTopic("");
@@ -138,7 +136,6 @@ export function MainPage() {
                       messageCount={messageCount}
                       messageIndex={index}
                       setIsLoading={setIsLoading}
-                      setMessageLoading={setMessageLoading}
                     />{" "}
                     {/* Speed can be adjusted to be faster/slower if needed - lower number is faster*/}
                   </div>
@@ -155,7 +152,7 @@ export function MainPage() {
                 )}
               </div>
             ))}
-            {isLoading && messageLoading && (
+            {isLoading == 1 && (
               <div>
                 <br></br>
                 <ArrowPathIcon className="dark:text-sky-100 text-sky-700 w-9 mx-auto motion-safe:animate-spin"></ArrowPathIcon>
@@ -197,7 +194,7 @@ export function MainPage() {
               placeholder={
                 randomPlaceholder ? randomPlaceholder : "Enter Topic Here..."
               }
-              disabled={isLoading}
+              disabled={isLoading != 0}
               onChange={(e) => setSubmittedTopic(e.target.value)}
               value={submittedTopic}
               onKeyDown={(e) => {
@@ -209,7 +206,7 @@ export function MainPage() {
               <button
                 name="Submit"
                 type="submit"
-                disabled={isLoading}
+                disabled={isLoading != 0}
                 className={"bg-sky-700 ml-auto self-end text-white rounded-lg"}
               >
                 Go!
