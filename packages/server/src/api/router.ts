@@ -186,20 +186,20 @@ let roles: Array<string> = [
 ];
 
 let roleAvatars: { [key: string]: string } = {
-  "Philosopher": 'philosopher.png',
-  "Angry Drunk": 'drunk.png',
-  "Conspiracy Theorist": 'theorist.png',
-  "Cowboy": 'cowboy.png',
-  "Pirate": 'pirate.png',
-  "Valley Girl": 'valley.png',
-  "Shakespearean Bard": 'bard.png',
-  "Hyperactive Dog That Can Talk": 'dog.png',
-  "Mime": 'mime.png',
-  "Professional Rapper That Rhymes Everything": 'rapper.png',
-  "Caveman": 'caveman.png',
+  Philosopher: "philosopher.png",
+  "Angry Drunk": "drunk.png",
+  "Conspiracy Theorist": "theorist.png",
+  Cowboy: "cowboy.png",
+  Pirate: "pirate.png",
+  "Valley Girl": "valley.png",
+  "Shakespearean Bard": "bard.png",
+  "Hyperactive Dog That Can Talk": "dog.png",
+  Mime: "mime.png",
+  "Professional Rapper That Rhymes Everything": "rapper.png",
+  Caveman: "caveman.png",
   //Character From Media (that we may or may not be allowed to use)
-  "Super Mario": 'mario.png',
-  "Yoda": 'yoda.png',
+  "Super Mario": "mario.png",
+  Yoda: "yoda.png",
 };
 
 function randomRole() {

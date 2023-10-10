@@ -8,7 +8,8 @@ import { RouterInput, trpc } from "../utils/trpc";
 import { Router } from "@trpc/server";
 
 export function MainPage() {
-  const roleAvatars: { [key: string]: string } | undefined = trpc.roleAvatars.useQuery().data;
+  const roleAvatars: { [key: string]: string } | undefined =
+    trpc.roleAvatars.useQuery().data;
 
   const [messages, setMessages] = useState<
     { text: string; isRight: boolean; avatarUrl: string }[]
@@ -20,17 +21,19 @@ export function MainPage() {
     useState<string>("Debater");
   const [messageCount, setMessageCount] = useState<number>(2);
 
-  let leftAvatarUrl = '/images/default.jpg';
-  let rightAvatarUrl = '/images/default.jpg';
+  let leftAvatarUrl = "/images/default.jpg";
+  let rightAvatarUrl = "/images/default.jpg";
   if (roleAvatars && selectedRoleAgainst) {
-    leftAvatarUrl = selectedRoleAgainst === 'Debater' || !selectedRoleAgainst
-      ? '/images/default.jpg'
-      : `/images/${roleAvatars[selectedRoleAgainst]}`; 
+    leftAvatarUrl =
+      selectedRoleAgainst === "Debater" || !selectedRoleAgainst
+        ? "/images/default.jpg"
+        : `/images/${roleAvatars[selectedRoleAgainst]}`;
   }
   if (roleAvatars && selectedRoleFor) {
-    rightAvatarUrl = selectedRoleFor === 'Debater' || !selectedRoleFor
-      ? '/images/default.jpg'
-      : `/images/${roleAvatars[selectedRoleFor]}`; 
+    rightAvatarUrl =
+      selectedRoleFor === "Debater" || !selectedRoleFor
+        ? "/images/default.jpg"
+        : `/images/${roleAvatars[selectedRoleFor]}`;
   }
 
   const [debateArgs, setDebateArgs] = useState<
