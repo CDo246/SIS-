@@ -99,54 +99,59 @@ export function MainPage() {
             setWarningVisible={setWarningVisible}
           />
           <div className="border overflow-y-auto dark:border-gray-500 rounded-lg p-4 shadow-md grow fixed lg:w-7/12 mx-auto lg:min-w-[900px] w-full max-h-full top-20 bottom-40 inset-x-0">
-            {messages.map((msg, index) => (
-              <div
-                key={index}
-                className={`flex ${
-                  msg.isRight ? "justify-end" : "justify-start"
-                } py-1`}
-              >
-                {
-                  // Placing left side avatars before chat bubbles, and right side avatars after chat bubbles
-                  <div className={`${msg.isRight && "order-last"} min-w-fit`}>
-                    <br></br>
-                    <img
-                      src={msg.isRight ? rightAvatarUrl : leftAvatarUrl}
-                      alt="Profile Picture"
-                      className={`${
-                        msg.isRight ? "ml-2" : "mr-2"
-                      } w-8 h-8 rounded-full`} // Adjust 'ml-2' and 'mr-2' as required for margin purposes
-                    />
-                  </div>
-                }
-                <div className="flex flex-col">
-                  <span
-                    className={`${
-                      msg.isRight && "text-end"
-                    } mx-2 text-[#9ca3af]`}
-                  >
-                    {msg.isRight ? selectedRoleFor : selectedRoleAgainst}
-                  </span>
+            {messages.map(
+              (msg, index) =>
+                currentCount >= index && ( // next message must wait for previous ones to finish
                   <div
-                    className={`${
-                      msg.isRight
-                        ? "bg-blue-100 dark:bg-blue-950 dark:text-white"
-                        : "bg-gray-100 dark:bg-gray-800 dark:text-white"
-                    } p-2 rounded-lg inline-block max-w-2xl`}
+                    key={index}
+                    className={`flex ${
+                      msg.isRight ? "justify-end" : "justify-start"
+                    } py-1`}
                   >
-                    <TypingText
-                      text={msg.text}
-                      speed={5}
-                      messageCount={messageCount}
-                      setCurrentCount={setCurrentCount}
-                      messageIndex={index}
-                      setIsLoading={setIsLoading}
-                    />{" "}
-                    {/* Speed can be adjusted to be faster/slower if needed - lower number is faster*/}
+                    {
+                      // Placing left side avatars before chat bubbles, and right side avatars after chat bubbles
+                      <div
+                        className={`${msg.isRight && "order-last"} min-w-fit`}
+                      >
+                        <br></br>
+                        <img
+                          src={msg.isRight ? rightAvatarUrl : leftAvatarUrl}
+                          alt="Profile Picture"
+                          className={`${
+                            msg.isRight ? "ml-2" : "mr-2"
+                          } w-8 h-8 rounded-full`} // Adjust 'ml-2' and 'mr-2' as required for margin purposes
+                        />
+                      </div>
+                    }
+                    <div className="flex flex-col">
+                      <span
+                        className={`${
+                          msg.isRight && "text-end"
+                        } mx-2 text-[#9ca3af]`}
+                      >
+                        {msg.isRight ? selectedRoleFor : selectedRoleAgainst}
+                      </span>
+                      <div
+                        className={`${
+                          msg.isRight
+                            ? "bg-blue-100 dark:bg-blue-950 dark:text-white"
+                            : "bg-gray-100 dark:bg-gray-800 dark:text-white"
+                        } p-2 rounded-lg inline-block max-w-2xl min-h-10`}
+                      >
+                        <TypingText
+                          text={msg.text}
+                          speed={5}
+                          messageCount={messageCount}
+                          setCurrentCount={setCurrentCount}
+                          messageIndex={index}
+                          setIsLoading={setIsLoading}
+                        />{" "}
+                        {/* Speed can be adjusted to be faster/slower if needed - lower number is faster*/}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            ))}
+                ),
+            )}
             {isLoading == 1 && (
               // Loading text bubbles
               <div
@@ -173,7 +178,11 @@ export function MainPage() {
                     />
                   </div>
                 }
-                <div className="flex flex-col">
+                <div
+                  className={`${
+                    currentCount % 2 == 0 && "items-end"
+                  } flex flex-col`}
+                >
                   <span
                     className={`${
                       currentCount % 2 == 0 && "text-end"
@@ -188,9 +197,9 @@ export function MainPage() {
                       currentCount % 2 == 0
                         ? "bg-blue-100 dark:bg-blue-950 dark:text-white"
                         : "bg-gray-100 dark:bg-gray-800 dark:text-white"
-                    } p-2 rounded-lg inline-block max-w-2xl`}
+                    } p-2 rounded-lg inline-block max-w-[48px] max-h-10`}
                   >
-                    <EllipsisHorizontalIcon className="h-8 mx-auto motion-safe:animate-pulse" />{" "}
+                    <EllipsisHorizontalIcon className="h-8 text-center mx-auto motion-safe:animate-pulse" />{" "}
                   </div>
                 </div>
               </div>
