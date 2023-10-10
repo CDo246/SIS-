@@ -105,16 +105,19 @@ export function MainPage() {
                   msg.isRight ? "justify-end" : "justify-start"
                 } py-1`}
               >
-                {!msg.isRight && ( // Placing left side avatars before chat bubbles, and right side avatars after chat bubbles
-                  <div className="min-w-fit">
+                {
+                  // Placing left side avatars before chat bubbles, and right side avatars after chat bubbles
+                  <div className={`${msg.isRight && "order-last"} min-w-fit`}>
                     <br></br>
                     <img
-                      src={leftAvatarUrl}
+                      src={msg.isRight ? rightAvatarUrl : leftAvatarUrl}
                       alt="Profile Picture"
-                      className="w-8 h-8 rounded-full mr-2" // Adjust 'mr-2' as required for margin purposes
+                      className={`${
+                        msg.isRight ? "ml-2" : "mr-2"
+                      } w-8 h-8 rounded-full`} // Adjust 'ml-2' and 'mr-2' as required for margin purposes
                     />
                   </div>
-                )}
+                }
                 <div className="flex flex-col">
                   <span
                     className={`${
@@ -140,16 +143,6 @@ export function MainPage() {
                     {/* Speed can be adjusted to be faster/slower if needed - lower number is faster*/}
                   </div>
                 </div>
-                {msg.isRight && (
-                  <div className="min-w-fit">
-                    <br></br>
-                    <img
-                      src={rightAvatarUrl}
-                      alt="Profile Picture"
-                      className="w-8 h-8 rounded-full ml-2" // Adjust 'ml-2' as required for margin purposes
-                    />
-                  </div>
-                )}
               </div>
             ))}
             {isLoading == 1 && (
