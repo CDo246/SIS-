@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import OptionsBar from "./OptionsBar.tsx";
 import "../index.css";
 import TypingText from "../assets/TypingText";
@@ -12,6 +12,7 @@ export function MainPage() {
   const leftAvatarUrl = leftAvatar; // Left and right side Avatar URLS can be adjusted here
   const rightAvatarUrl = rightAvatar;
 
+  const bottom = useRef<null | HTMLDivElement>(null);
   const [messages, setMessages] = useState<
     { text: string; isRight: boolean; avatarUrl: string }[]
   >([]);
@@ -56,6 +57,16 @@ export function MainPage() {
       document.getElementById("root")!.className = "";
     };
   }, []);
+
+  useEffect(() => {
+    const scrollInterval = setInterval(() => {
+      if (isLoading == 2)
+        bottom.current?.scrollIntoView({ behavior: "smooth" }), 25;
+    });
+    return () => {
+      clearInterval(scrollInterval);
+    };
+  });
   const handleSend = async (topic: string) => {
     setMessages([]);
     setDebateArgs({
@@ -204,6 +215,7 @@ export function MainPage() {
                 </div>
               </div>
             )}
+            <div ref={bottom}></div>
           </div>
           {/* <div className="mt-4">
             <input
