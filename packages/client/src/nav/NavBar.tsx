@@ -88,7 +88,7 @@ export function NavBar() {
                         href={item.href}
                         className={classNames(
                           item.current ? "bg-sky-800 text-white" : "text-black",
-                          "flex items-center rounded-t-md px-3 text-lg font-medium hover:text-blue-700",
+                          "flex items-center rounded-md px-3 text-lg font-medium hover:text-blue-700",
                         )}
                         aria-current={item.current ? "page" : undefined}
                       >
