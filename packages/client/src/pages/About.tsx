@@ -21,7 +21,7 @@ export function About() {
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="#60A5FA"
-            className="w-5 h-5"
+            className="min-w-[20px] h-5"
           >
             <path
               fill-rule="evenodd"
@@ -41,7 +41,7 @@ export function About() {
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="#60A5FA"
-            className="w-5 h-5"
+            className="min-w-[20px] h-5"
           >
             <path
               fill-rule="evenodd"
@@ -62,7 +62,7 @@ export function About() {
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="#60A5FA"
-            className="w-5 h-5"
+            className="min-w-[20px] h-5"
           >
             <path
               fill-rule="evenodd"
@@ -79,7 +79,7 @@ export function About() {
         </li>
 
         <p className="dark:text-white my-2">
-          The arguments generated is intended for personal purposes, such as to
+          The arguments generated are intended for personal purposes, such as to
           enhance one's debating skills or to gather general information about a
           topic of interest.
         </p>
