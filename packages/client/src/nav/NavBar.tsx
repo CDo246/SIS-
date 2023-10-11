@@ -25,7 +25,7 @@ const navigation = [
   },
   {
     name: "About",
-    href: "#",
+    href: "/About",
     src: (
       <InformationCircleIcon
         className="block h-10 w-10"
