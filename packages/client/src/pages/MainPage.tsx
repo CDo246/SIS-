@@ -10,6 +10,8 @@ export function MainPage() {
     trpc.roleAvatars.useQuery().data;
 
   const bottom = useRef<null | HTMLDivElement>(null);
+  const topicArea = useRef<null | HTMLTextAreaElement>(null);
+
   const [messages, setMessages] = useState<
     { text: string; isRight: boolean; avatarUrl: string }[]
   >([]);
@@ -23,6 +25,9 @@ export function MainPage() {
   const [currentCount, setCurrentCount] = useState<number>(0);
   const [warningVisible, setWarningVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<number>(0); // 0: not loading, 1: loading debate, 2: waiting for text to display
+
+  const getRandomPlaceholder = trpc.randTopic.useQuery().data;
+  const randomPlaceholder: string | undefined = getRandomPlaceholder;
 
   let leftAvatarUrl = "/images/default.jpg";
   let rightAvatarUrl = "/images/default.jpg";
@@ -60,10 +65,9 @@ export function MainPage() {
       },
     },
   );
-  const randomPlaceholder = trpc.randTopic.useQuery().data;
 
   useEffect(() => {
-    //when the MainPage component is rendered, prevent the screen from scrolling
+    // when the MainPage component is rendered, prevent the screen from scrolling
     document.getElementById("root")!.className = "flex flex-col h-screen";
     return () => {
       document.getElementById("root")!.className = "";
@@ -71,6 +75,7 @@ export function MainPage() {
   }, []);
 
   useEffect(() => {
+    // scroll to bottom while message is displaying
     const scrollInterval = setInterval(() => {
       if (isLoading == 2)
         bottom.current?.scrollIntoView({ behavior: "smooth" }), 25;
@@ -264,6 +269,7 @@ export function MainPage() {
             className="absolute shadow-lg lg:w-1/2 h-24 w-11/12 m-2 p-2 space-x-2 justify-center rounded-md bottom-0 dark:bg-gray-800 flex"
           >
             <textarea
+              ref={topicArea}
               placeholder={
                 randomPlaceholder ? randomPlaceholder : "Enter Topic Here..."
               }
@@ -272,6 +278,19 @@ export function MainPage() {
               value={submittedTopic}
               onKeyDown={(e) => {
                 if (e.key == "Enter" && !e.shiftKey) handleSubmit(e);
+                addEventListener("keydown", (event) => {
+                  if (
+                    event.key === "Tab" &&
+                    !e.shiftKey &&
+                    !submittedTopic &&
+                    randomPlaceholder
+                  ) {
+                    e.preventDefault();
+                    const placeholder =
+                      topicArea.current?.getAttribute("placeholder");
+                    placeholder && setSubmittedTopic(placeholder);
+                  }
+                });
               }}
               className="resize-none max-w-screen-lg flex-grow box-border bg-transparent dark:text-white"
             ></textarea>
