@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import {
   Cog6ToothIcon,
@@ -21,6 +22,14 @@ export default function OptionsBar(props: {
 }) {
   const roles: string[] | undefined = trpc.roles.useQuery().data;
 
+  useEffect(() => {
+    addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        props.setIsOpen(false);
+      }
+    });
+  });
+
   return (
     <>
       <div
@@ -31,169 +40,166 @@ export default function OptionsBar(props: {
         <button
           type="button"
           onClick={() => props.setIsOpen(!props.isOpen)}
-          className="flex align-center pointer-events-auto shadow-xl justify-center bg-opacity-20 text-sm dark:text-gray-300 hover:bg-opacity-30 focus:outline-none focus-visible:ring-1 focus-visible:ring-white focus-visible:ring-opacity-75 px-0 ml-8 lg:ml-0 py-0 w-9"
+          className="pointer-events-auto bg-gray-100/90 dark:bg-gray-800/90 hover:text-white shadow-xl bg-opacity-20 text-sm dark:text-gray-300 hover:bg-opacity-30 focus:outline-none focus-visible:ring-1 focus-visible:ring-white focus-visible:ring-opacity-75 px-0 ml-8 lg:ml-0 py-0 w-fit"
         >
           {!props.isOpen ? (
-            <Cog6ToothIcon
-              className="w-9 h-9 dark:bg-gray-800/90 bg-gray-100/90 text-sky-700 hover:text-sky-900 dark:text-gray-300 dark:hover:text-gray-400 rounded-lg"
+            <div
+              className="flex w-fit items-center justify-between min-w-[115px] max-w-[115px]"
               title="Options"
-            />
+            >
+              <Cog6ToothIcon className="w-9 h-9 text-sky-700 dark:text-gray-300 rounded-lg" />
+              <span className="flex-grow text-lg px-2 text-center">
+                Options
+              </span>
+            </div>
           ) : (
             <XMarkIcon
-              className="w-9 h-9 dark:bg-gray-800/90 bg-gray-100/90 text-sky-700 hover:text-sky-900 dark:text-gray-300 dark:hover:text-gray-400 rounded-lg"
+              className="w-9 h-9 dark:bg-gray-800/90 text-sky-700 dark:text-gray-300 rounded-lg"
               title="Close"
             />
           )}
         </button>
-        <Transition
-          appear
-          show={props.isOpen}
-          enter="transition-opacity duration-75"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="transition-opacity duration-150"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-          className="lg:space-y-0 lg:-mx-2 space-y-2 p-2 mx-auto lg:mx-[initial] flex flex-col lg:flex-row lg:justify-between lg:w-[100%] w-[85%] md:h-fit lg:h-14 lg:rounded-tr-lg rounded-lg lg:rounded-none bg-white/90 dark:bg-gray-800/90 shadow-lg"
-        >
-          <Listbox
-            value={props.selectedRoleAgainst}
-            onChange={(e) => {
-              props.setSelectedRoleAgainst(e);
-              props.setWarningVisible(true);
-            }}
-          >
-            <div className="flex lg:grow lg:basis-80 lg:mx-2 items-start lg:items-center relative lg:flex-row flex-col lg:space-y-0 lg:border-r lg:border-gray-500 pr-4">
-              <Listbox.Label className="dark:text-white font-bold sm:pb-0 lg:mr-2">
-                Against:
-              </Listbox.Label>
-              <Listbox.Button className="flex justify-between items-center text-left bg-sky-100 text-black text-sm lg:max-w-[75%] w-11/12 lg:p-1">
-                <span className="pl-2">
-                  {props.selectedRoleAgainst
-                    ? props.selectedRoleAgainst
-                    : "Choose role..."}
-                </span>
-                <ChevronDownIcon className="h-6 inline" />
-              </Listbox.Button>
-              <Transition
-                appear
-                enter="transition-opacity duration-75"
-                enterFrom="opacity-0"
-                enterTo="opacity-100"
-                leave="transition-opacity duration-150"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-                className="absolute left-0 lg:-ml-4 top-16 lg:top-0 w-full z-40"
-              >
-                <Listbox.Options className="lg:space-y-0 space-y-3 lg:mt-12 z-40 max-h-56 rounded-b-md overflow-y-auto bg-white">
-                  {roles ? (
-                    roles.map((role) => (
-                      <Listbox.Option
-                        key={role}
-                        value={role}
-                        className={({ active, selected }) =>
-                          `${active && "bg-sky-100 rounded-md"} ${
-                            selected && "bg-sky-200"
-                          } p-1 pl-2 cursor-pointer`
-                        }
-                      >
-                        {role}
-                      </Listbox.Option>
-                    ))
-                  ) : (
-                    <div className="h-9 flex align-center overflow-hidden">
-                      <ArrowPathIcon className="text-sky-700 w-9 mx-auto motion-safe:animate-spin" />
-                    </div>
-                  )}
-                </Listbox.Options>
-              </Transition>
-            </div>
-          </Listbox>
-          <div className="flex grow basis-[12%] lg:mx-2 lg:order-2 order-last items-center lg:justify-center relative lg:flex-row flex-col lg:space-y-0">
-            <label
-              className="dark:text-white font-bold sm:pb-0 lg:mr-2"
-              htmlFor="Message Count"
-              title="Number of messages per debater"
-            >
-              Message Count:
-            </label>
-            <input
+        {props.isOpen && (
+          <div className="lg:space-y-0 lg:-mx-2 space-y-2 p-2 mx-auto lg:mx-[initial] flex flex-col lg:flex-row lg:justify-between lg:w-[100%] w-[85%] md:h-fit lg:h-14 lg:rounded-tr-lg rounded-lg lg:rounded-none bg-white/90 dark:bg-gray-800/90 shadow-lg">
+            <Listbox
+              value={props.selectedRoleAgainst}
               onChange={(e) => {
-                if (
-                  (e.target.value as unknown as number) >= 1 &&
-                  (e.target.value as unknown as number) <= 4
-                )
-                  props.setMessageCount(e.target.valueAsNumber);
+                props.setSelectedRoleAgainst(e);
                 props.setWarningVisible(true);
               }}
-              type="number"
-              id="messageCount"
-              name="Message Count"
-              defaultValue={props.messageCount}
-              min="1"
-              max="4"
-              className="w-16 p-1.5 text-center rounded-lg bg-sky-100"
-            ></input>
-          </div>
-          <Listbox
-            value={props.selectedRoleFor}
-            onChange={(e) => {
-              props.setSelectedRoleFor(e);
-              props.setWarningVisible(true);
-            }}
-          >
-            <div className="flex lg:grow lg:basis-80 lg:mx-2 pl-4 items-end lg:items-center lg:order-last order-2 relative lg:flex-row flex-col lg:space-y-0 lg:border-l lg:border-gray-500">
-              <Transition
-                appear
-                enter="transition-opacity duration-75"
-                enterFrom="opacity-0"
-                enterTo="opacity-100"
-                leave="transition-opacity duration-150"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-                className="absolute right-0 top-16 lg:top-0 w-full z-40"
+            >
+              <div className="flex lg:grow lg:basis-80 lg:mx-2 items-start lg:items-center relative lg:flex-row flex-col lg:space-y-0 lg:border-r lg:border-gray-500 pr-4">
+                <Listbox.Label className="dark:text-white font-bold sm:pb-0 lg:mr-2">
+                  Against:
+                </Listbox.Label>
+                <Listbox.Button className="flex justify-between items-center text-left bg-sky-100 text-black text-sm lg:max-w-[75%] max-h-12 w-11/12 lg:p-1">
+                  <span className="pl-2 overflow-hidden">
+                    {props.selectedRoleAgainst
+                      ? props.selectedRoleAgainst
+                      : "Choose role..."}
+                  </span>
+                  <ChevronDownIcon className="h-6 inline" />
+                </Listbox.Button>
+                <Transition
+                  appear
+                  enter="transition-opacity duration-75"
+                  enterFrom="opacity-0"
+                  enterTo="opacity-100"
+                  leave="transition-opacity duration-150"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0"
+                  className="absolute left-0 lg:-ml-4 top-16 lg:top-0 w-full z-40"
+                >
+                  <Listbox.Options className="lg:space-y-0 space-y-3 lg:mt-12 z-40 max-h-56 rounded-b-md overflow-y-auto bg-white">
+                    {roles ? (
+                      roles.map((role) => (
+                        <Listbox.Option
+                          key={role}
+                          value={role}
+                          className={({ active, selected }) =>
+                            `${active && "bg-sky-100 rounded-md"} ${
+                              selected && "bg-sky-200"
+                            } p-1 pl-2 cursor-pointer`
+                          }
+                        >
+                          {role}
+                        </Listbox.Option>
+                      ))
+                    ) : (
+                      <div className="h-9 flex align-center overflow-hidden">
+                        <ArrowPathIcon className="text-sky-700 w-9 mx-auto motion-safe:animate-spin" />
+                      </div>
+                    )}
+                  </Listbox.Options>
+                </Transition>
+              </div>
+            </Listbox>
+            <div className="flex grow basis-[12%] lg:mx-2 lg:order-2 order-last items-center lg:justify-center relative lg:flex-row flex-col lg:space-y-0">
+              <label
+                className="dark:text-white font-bold sm:pb-0 lg:mr-2"
+                htmlFor="Message Count"
+                title="Number of messages per debater"
               >
-                <Listbox.Options className="lg:space-y-0 space-y-3 lg:mt-12 z-40 max-h-56 rounded-b-md overflow-y-auto bg-white">
-                  {roles ? (
-                    roles.map((role) => (
-                      <Listbox.Option
-                        key={role}
-                        value={role}
-                        className={({ active, selected }) =>
-                          `${active && "bg-sky-100 rounded-md"} ${
-                            selected && "bg-sky-200"
-                          } p-1 pl-2 cursor-pointer`
-                        }
-                      >
-                        {role}
-                      </Listbox.Option>
-                    ))
-                  ) : (
-                    <div className="h-9 flex align-center overflow-hidden">
-                      <ArrowPathIcon className="text-sky-700 w-9 mx-auto motion-safe:animate-spin" />
-                    </div>
-                  )}
-                </Listbox.Options>
-              </Transition>
-              <Listbox.Label className="dark:text-white font-bold sm:pb-0 text-end lg:mr-2">
-                For:
-              </Listbox.Label>
-              <Listbox.Button className="flex justify-between items-center text-left bg-sky-100 text-black text-sm lg:max-w-[75%] w-11/12 lg:p-1">
-                <span className="pl-2">
-                  {props.selectedRoleFor
-                    ? props.selectedRoleFor
-                    : "Choose role..."}
-                </span>
-                <ChevronDownIcon className="h-6 inline" />
-              </Listbox.Button>
+                Message Count:
+              </label>
+              <input
+                onChange={(e) => {
+                  if (
+                    (e.target.value as unknown as number) >= 1 &&
+                    (e.target.value as unknown as number) <= 4
+                  )
+                    props.setMessageCount(e.target.valueAsNumber);
+                  props.setWarningVisible(true);
+                }}
+                type="number"
+                id="messageCount"
+                name="Message Count"
+                defaultValue={props.messageCount}
+                min="1"
+                max="4"
+                className="w-16 p-1.5 text-center rounded-lg bg-sky-100"
+              ></input>
             </div>
-          </Listbox>
-          {props.warningVisible && (
-            <span className="fixed border-x-0 rounded-t-lg rounded-b-lg lg:rounded-none lg:top-36 sm:top-[23rem] top-[26rem] left-0 right-0 lg:left-[initial] lg:right-[initial] mx-auto lg:-ml-2 w-[85%] lg:w-[initial] p-2 text-[#9ca3af] dark:bg-gray-800/90 bg-white/90">
-              These changes will take effect when a new debate is generated.
-            </span>
-          )}
-        </Transition>
+            <Listbox
+              value={props.selectedRoleFor}
+              onChange={(e) => {
+                props.setSelectedRoleFor(e);
+                props.setWarningVisible(true);
+              }}
+            >
+              <div className="flex lg:grow lg:basis-80 lg:mx-2 pl-4 items-end lg:items-center lg:order-last order-2 relative lg:flex-row flex-col lg:space-y-0 lg:border-l lg:border-gray-500">
+                <Transition
+                  appear
+                  enter="transition-opacity duration-75"
+                  enterFrom="opacity-0"
+                  enterTo="opacity-100"
+                  leave="transition-opacity duration-150"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0"
+                  className="absolute right-0 top-16 lg:top-0 w-full z-40"
+                >
+                  <Listbox.Options className="lg:space-y-0 space-y-3 lg:mt-12 z-40 max-h-56 rounded-b-md overflow-y-auto bg-white">
+                    {roles ? (
+                      roles.map((role) => (
+                        <Listbox.Option
+                          key={role}
+                          value={role}
+                          className={({ active, selected }) =>
+                            `${active && "bg-sky-100 rounded-md"} ${
+                              selected && "bg-sky-200"
+                            } p-1 pl-2 cursor-pointer`
+                          }
+                        >
+                          {role}
+                        </Listbox.Option>
+                      ))
+                    ) : (
+                      <div className="h-9 flex align-center overflow-hidden">
+                        <ArrowPathIcon className="text-sky-700 w-9 mx-auto motion-safe:animate-spin" />
+                      </div>
+                    )}
+                  </Listbox.Options>
+                </Transition>
+                <Listbox.Label className="dark:text-white font-bold sm:pb-0 text-end lg:mr-2">
+                  For:
+                </Listbox.Label>
+                <Listbox.Button className="flex justify-between items-center text-left bg-sky-100 text-black text-sm lg:max-w-[75%] max-h-12 w-11/12 lg:p-1">
+                  <span className="pl-2 overflow-hidden">
+                    {props.selectedRoleFor
+                      ? props.selectedRoleFor
+                      : "Choose role..."}
+                  </span>
+                  <ChevronDownIcon className="h-6 inline" />
+                </Listbox.Button>
+              </div>
+            </Listbox>
+            {props.warningVisible && (
+              <span className="fixed border-x-0 rounded-t-lg rounded-b-lg lg:rounded-none lg:top-36 sm:top-[23rem] top-[26rem] left-0 right-0 lg:left-[initial] lg:right-[initial] mx-auto lg:-ml-2 w-[85%] lg:w-[initial] p-2 text-[#9ca3af] dark:bg-gray-800/90 bg-white/90">
+                These changes will take effect when a new debate is generated.
+              </span>
+            )}
+          </div>
+        )}
       </div>
     </>
   );
