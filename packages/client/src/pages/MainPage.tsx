@@ -2,11 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import OptionsBar from "./OptionsBar.tsx";
 import "../index.css";
 import TypingText from "../assets/TypingText";
-import leftAvatar from "./left-avatar.jpg";
-import rightAvatar from "./right-avatar.jpg";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import { RouterInput, trpc } from "../utils/trpc";
-import { Router } from "@trpc/server";
 
 export function MainPage() {
   const roleAvatars: { [key: string]: string } | undefined =
@@ -156,7 +153,9 @@ export function MainPage() {
                           msg.isRight && "text-end"
                         } mx-2 text-[#9ca3af]`}
                       >
-                        {msg.isRight ? selectedRoleFor : selectedRoleAgainst}
+                        {msg.isRight
+                          ? selectedRoleFor + " (For)"
+                          : selectedRoleAgainst + " (Against)"}
                       </span>
                       <div
                         className={`${
@@ -216,8 +215,8 @@ export function MainPage() {
                     } mx-2 text-[#9ca3af]`}
                   >
                     {currentCount % 2 == 0
-                      ? selectedRoleFor
-                      : selectedRoleAgainst}
+                      ? selectedRoleFor + " (For)"
+                      : selectedRoleAgainst + " (Against)"}
                   </span>
                   <div
                     className={`${
