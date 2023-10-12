@@ -21,6 +21,14 @@ export function MainPage() {
   const [selectedRoleFor, setSelectedRoleFor] = useState<string>("Debater");
   const [selectedRoleAgainst, setSelectedRoleAgainst] =
     useState<string>("Debater");
+  const [roleFor, setRoleFor] = useState<string>("Debater");
+  const [roleAgainst, setRoleAgainst] = useState<string>("Debater");
+  const [rightAvatarUrl, setRightAvatarUrl] = useState<string>(
+    "/images/default.jpg",
+  );
+  const [leftAvatarUrl, setLeftAvatarUrl] = useState<string>(
+    "/images/default.jpg",
+  );
   const [messageCount, setMessageCount] = useState<number>(2);
   const [currentCount, setCurrentCount] = useState<number>(0);
   const [warningVisible, setWarningVisible] = useState<boolean>(false);
@@ -29,20 +37,22 @@ export function MainPage() {
   const getRandomPlaceholder = trpc.randTopic.useQuery().data;
   const randomPlaceholder: string | undefined = getRandomPlaceholder;
 
-  let leftAvatarUrl = "/images/default.jpg";
-  let rightAvatarUrl = "/images/default.jpg";
-  if (roleAvatars && selectedRoleAgainst) {
-    leftAvatarUrl =
-      selectedRoleAgainst === "Debater" || !selectedRoleAgainst
-        ? "/images/default.jpg"
-        : `/images/${roleAvatars[selectedRoleAgainst]}`;
-  }
-  if (roleAvatars && selectedRoleFor) {
-    rightAvatarUrl =
-      selectedRoleFor === "Debater" || !selectedRoleFor
-        ? "/images/default.jpg"
-        : `/images/${roleAvatars[selectedRoleFor]}`;
-  }
+  useEffect(() => {
+    if (roleAvatars && roleAgainst) {
+      setLeftAvatarUrl(
+        roleAgainst === "Debater" || !roleAgainst
+          ? "/images/default.jpg"
+          : `/images/${roleAvatars[roleAgainst]}`,
+      );
+    }
+    if (roleAvatars && roleFor) {
+      setRightAvatarUrl(
+        roleFor === "Debater" || !roleFor
+          ? "/images/default.jpg"
+          : `/images/${roleAvatars[roleFor]}`,
+      );
+    }
+  }, [roleAgainst, roleFor, roleAvatars]);
 
   const [debateArgs, setDebateArgs] = useState<
     RouterInput["generateDebateStream"] | null
@@ -106,6 +116,8 @@ export function MainPage() {
       handleSend(submittedTopic.trim());
       setTopic(submittedTopic.trim());
       setSubmittedTopic("");
+      setRoleFor(selectedRoleFor);
+      setRoleAgainst(selectedRoleAgainst);
       setWarningVisible(false);
     }
   };
@@ -159,8 +171,8 @@ export function MainPage() {
                         } mx-2 text-[#9ca3af]`}
                       >
                         {msg.isRight
-                          ? selectedRoleFor + " (For)"
-                          : selectedRoleAgainst + " (Against)"}
+                          ? roleFor + " (For)"
+                          : roleAgainst + " (Against)"}
                       </span>
                       <div
                         className={`${
@@ -220,8 +232,8 @@ export function MainPage() {
                     } mx-2 text-[#9ca3af]`}
                   >
                     {currentCount % 2 == 0
-                      ? selectedRoleFor + " (For)"
-                      : selectedRoleAgainst + " (Against)"}
+                      ? roleFor + " (For)"
+                      : roleAgainst + " (Against)"}
                   </span>
                   <div
                     className={`${
