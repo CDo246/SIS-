@@ -311,7 +311,7 @@ export function MainPage() {
                 name="Submit"
                 type="submit"
                 disabled={isLoading != 0}
-                className={"bg-sky-700 ml-auto self-end text-white rounded-lg"}
+                className={"bg-sky-700 ml-auto self-end h-full text-white rounded-lg"}
               >
                 Go!
               </button>
