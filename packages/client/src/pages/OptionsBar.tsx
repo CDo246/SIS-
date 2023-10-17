@@ -34,9 +34,10 @@ export default function OptionsBar(props: {
     return () => removeEventListener("keyup", handleEscape);
   }, [event]);
 
-  useEffect(() => {
-    props.roles && props.roles.push("Custom...");
-  }, [props.roles]);
+  // Deprecated due to adding the "Custom..." roles directly into the backend
+  // useEffect(() => {
+  //   props.roles && props.roles.push("Custom...");
+  // }, [props.roles]);
 
   useEffect(() => {
     if (props.selectedRoleAgainst == "Custom...") {

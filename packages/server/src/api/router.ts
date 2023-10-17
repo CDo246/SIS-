@@ -183,6 +183,8 @@ let roles: Array<string> = [
   //Character From Media (that we may or may not be allowed to use)
   "Super Mario",
   "Yoda",
+  //Custom Personality
+  "Custom...",
 ];
 
 let roleAvatars: { [key: string]: string } = {
