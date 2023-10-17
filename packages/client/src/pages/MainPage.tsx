@@ -34,25 +34,26 @@ export function MainPage() {
   const [warningVisible, setWarningVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<number>(0); // 0: not loading, 1: loading debate, 2: waiting for text to display
 
+  const roles: string[] | undefined = trpc.roles.useQuery().data;
   const getRandomPlaceholder = trpc.randTopic.useQuery().data;
   const randomPlaceholder: string | undefined = getRandomPlaceholder;
 
   useEffect(() => {
     if (roleAvatars && roleAgainst) {
       setLeftAvatarUrl(
-        roleAgainst === "Debater" || !roleAgainst
+        !roles?.includes(roleAgainst)
           ? "/images/default.jpg"
           : `/images/${roleAvatars[roleAgainst]}`,
       );
     }
     if (roleAvatars && roleFor) {
       setRightAvatarUrl(
-        roleFor === "Debater" || !roleFor
+        !roles?.includes(roleFor)
           ? "/images/default.jpg"
           : `/images/${roleAvatars[roleFor]}`,
       );
     }
-  }, [roleAgainst, roleFor, roleAvatars]);
+  }, [roleAgainst, roleFor, roleAvatars, roles]);
 
   const [debateArgs, setDebateArgs] = useState<
     RouterInput["generateDebateStream"] | null
@@ -128,6 +129,7 @@ export function MainPage() {
         <div className="flex-grow p-4">
           {/* <TestDebate></TestDebate> */}
           <OptionsBar
+            roles={roles}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             selectedRoleAgainst={selectedRoleAgainst}
@@ -311,7 +313,9 @@ export function MainPage() {
                 name="Submit"
                 type="submit"
                 disabled={isLoading != 0}
-                className={"bg-sky-700 ml-auto self-end h-full text-white rounded-lg"}
+                className={
+                  "bg-sky-700 ml-auto self-end h-full text-white rounded-lg"
+                }
               >
                 Go!
               </button>

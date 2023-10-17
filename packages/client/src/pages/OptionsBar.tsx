@@ -1,14 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
+import { CustomRoleDialog } from "./CustomRoleDialog";
 import {
   Cog6ToothIcon,
   XMarkIcon,
   ChevronDownIcon,
   ArrowPathIcon,
 } from "@heroicons/react/24/solid";
-import { trpc } from "../utils/trpc";
 
 export default function OptionsBar(props: {
+  roles: string[] | undefined;
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   selectedRoleAgainst: string;
@@ -20,16 +21,32 @@ export default function OptionsBar(props: {
   warningVisible: boolean;
   setWarningVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const roles: string[] | undefined = trpc.roles.useQuery().data;
+  const [dialogOpenState, setDialogOpenState] = useState<number>(0); // 0: closed, 1: Against, 2: For
 
   useEffect(() => {
-    addEventListener("keydown", (event) => {
+    function handleEscape(event: KeyboardEvent) {
+      // event.preventDefault();
       if (event.key === "Escape") {
         props.setIsOpen(false);
       }
-    });
-  });
+    }
+    document.addEventListener("keyup", handleEscape);
+    return () => removeEventListener("keyup", handleEscape);
+  }, [event]);
 
+  // Deprecated due to adding the "Custom..." roles directly into the backend
+  // useEffect(() => {
+  //   props.roles && props.roles.push("Custom...");
+  // }, [props.roles]);
+
+  useEffect(() => {
+    if (props.selectedRoleAgainst == "Custom...") {
+      setDialogOpenState(1);
+    }
+    if (props.selectedRoleFor == "Custom...") {
+      setDialogOpenState(2);
+    }
+  }, [props.selectedRoleAgainst, props.selectedRoleFor]);
   return (
     <>
       <div
@@ -72,11 +89,11 @@ export default function OptionsBar(props: {
                 <Listbox.Label className="dark:text-white font-bold sm:pb-0 lg:mr-2">
                   Against:
                 </Listbox.Label>
-                <Listbox.Button className="flex justify-between items-center text-left bg-sky-100 text-black text-sm lg:max-w-[75%] max-h-12 w-11/12 lg:p-1">
-                  <span className="pl-2 overflow-hidden">
+                <Listbox.Button className="flex justify-between items-center text-left bg-sky-100 text-black hover:text-white text-sm lg:max-w-[75%] max-h-12 w-11/12 lg:p-1">
+                  <span className="pl-2 overflow-hidden max-w-full overflow-y-auto">
                     {props.selectedRoleAgainst
                       ? props.selectedRoleAgainst
-                      : "Choose role..."}
+                      : "Debater"}
                   </span>
                   <ChevronDownIcon className="h-6 inline" />
                 </Listbox.Button>
@@ -90,9 +107,9 @@ export default function OptionsBar(props: {
                   leaveTo="opacity-0"
                   className="absolute left-0 lg:-ml-4 top-16 lg:top-0 w-full z-40"
                 >
-                  <Listbox.Options className="lg:space-y-0 space-y-3 lg:mt-12 z-40 max-h-56 rounded-b-md overflow-y-auto bg-white">
-                    {roles ? (
-                      roles.map((role) => (
+                  <Listbox.Options className="lg:space-y-0 shadow-lg space-y-3 lg:mt-12 z-40 max-h-64 rounded-b-md overflow-y-auto bg-white">
+                    {props.roles ? (
+                      props.roles.map((role) => (
                         <Listbox.Option
                           key={role}
                           value={role}
@@ -158,9 +175,9 @@ export default function OptionsBar(props: {
                   leaveTo="opacity-0"
                   className="absolute right-0 top-16 lg:top-0 w-full z-40"
                 >
-                  <Listbox.Options className="lg:space-y-0 space-y-3 lg:mt-12 z-40 max-h-56 rounded-b-md overflow-y-auto bg-white">
-                    {roles ? (
-                      roles.map((role) => (
+                  <Listbox.Options className="lg:space-y-0 shadow-lg space-y-3 lg:mt-12 z-40 max-h-64 rounded-b-md overflow-y-auto bg-white">
+                    {props.roles ? (
+                      props.roles.map((role) => (
                         <Listbox.Option
                           key={role}
                           value={role}
@@ -183,11 +200,9 @@ export default function OptionsBar(props: {
                 <Listbox.Label className="dark:text-white font-bold sm:pb-0 text-end lg:mr-2">
                   For:
                 </Listbox.Label>
-                <Listbox.Button className="flex justify-between items-center text-left bg-sky-100 text-black text-sm lg:max-w-[75%] max-h-12 w-11/12 lg:p-1">
+                <Listbox.Button className="flex justify-between items-center text-left bg-sky-100 text-black hover:text-white text-sm lg:max-w-[75%] max-h-12 w-11/12 lg:p-1">
                   <span className="pl-2 overflow-hidden">
-                    {props.selectedRoleFor
-                      ? props.selectedRoleFor
-                      : "Choose role..."}
+                    {props.selectedRoleFor ? props.selectedRoleFor : "Debater"}
                   </span>
                   <ChevronDownIcon className="h-6 inline" />
                 </Listbox.Button>
@@ -201,6 +216,14 @@ export default function OptionsBar(props: {
           </div>
         )}
       </div>
+      <CustomRoleDialog
+        dialogOpenState={dialogOpenState}
+        setDialogOpenState={setDialogOpenState}
+        selectedRoleAgainst={props.selectedRoleAgainst}
+        setSelectedRoleAgainst={props.setSelectedRoleAgainst}
+        selectedRoleFor={props.selectedRoleFor}
+        setSelectedRoleFor={props.setSelectedRoleFor}
+      ></CustomRoleDialog>
     </>
   );
 }
