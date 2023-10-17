@@ -91,6 +91,9 @@ export function MainPage() {
       if (isLoading == 2)
         bottom.current?.scrollIntoView({ behavior: "smooth" }), 25;
     });
+    if (isLoading == 1) {
+      bottom.current?.scrollIntoView({ behavior: "smooth" });
+    }
     return () => {
       clearInterval(scrollInterval);
     };
@@ -151,21 +154,19 @@ export function MainPage() {
                       msg.isRight ? "justify-end" : "justify-start"
                     } py-1`}
                   >
-                    {
-                      // Placing left side avatars before chat bubbles, and right side avatars after chat bubbles
-                      <div
-                        className={`${msg.isRight && "order-last"} min-w-fit`}
-                      >
-                        <br></br>
-                        <img
-                          src={msg.isRight ? rightAvatarUrl : leftAvatarUrl}
-                          alt="Profile Picture"
-                          className={`${
-                            msg.isRight ? "ml-2" : "mr-2"
-                          } w-8 h-8 rounded-full`} // Adjust 'ml-2' and 'mr-2' as required for margin purposes
-                        />
-                      </div>
-                    }
+                    {/* Placing left side avatars before chat bubbles, and right
+                    side avatars after chat bubbles */}
+                    <div className={`${msg.isRight && "order-last"} min-w-fit`}>
+                      <br></br>
+                      <img
+                        src={msg.isRight ? rightAvatarUrl : leftAvatarUrl}
+                        alt="Profile Picture"
+                        title={msg.isRight ? roleFor : roleAgainst}
+                        className={`${
+                          msg.isRight ? "ml-2" : "mr-2"
+                        } w-8 lg:w-10 h-8 lg:h-10 rounded-full`} // Adjust 'ml-2' and 'mr-2' as required for margin purposes
+                      />
+                    </div>
                     <div className="flex flex-col">
                       <span
                         className={`${
@@ -217,6 +218,7 @@ export function MainPage() {
                         currentCount % 2 == 0 ? rightAvatarUrl : leftAvatarUrl
                       }
                       alt="Profile Picture"
+                      title={currentCount % 2 == 0 ? roleFor : roleAgainst}
                       className={`${
                         currentCount % 2 == 0 ? "ml-2" : "mr-2"
                       } w-8 h-8 rounded-full`} // Adjust 'ml-2' and 'mr-2' as required for margin purposes
@@ -273,19 +275,21 @@ export function MainPage() {
               Topic:&nbsp;
             </span>
           ) : (
-            <br></br>
+            <span className="font-bold" id="TopicSpan">
+              Enter topic below:
+            </span>
           )}
           {topic}
         </p>
         <div className="flex justify-center h-24 mt-2">
           <form
             onSubmit={handleSubmit}
-            className="absolute shadow-lg lg:w-1/2 h-24 w-11/12 m-2 p-2 space-x-2 justify-center rounded-md bottom-0 dark:bg-gray-800 flex"
+            className="absolute shadow-lg lg:w-1/2 h-24 w-11/12 m-2 p-2 space-x-2 justify-center rounded-lg bottom-0 dark:bg-gray-800 flex"
           >
             <textarea
               ref={topicArea}
               placeholder={
-                randomPlaceholder ? randomPlaceholder : "Enter Topic Here..."
+                randomPlaceholder ? randomPlaceholder : "Enter topic here..."
               }
               disabled={isLoading != 0}
               onChange={(e) => setSubmittedTopic(e.target.value)}
