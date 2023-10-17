@@ -3,22 +3,22 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
   XMarkIcon,
-  MagnifyingGlassIcon,
   UserCircleIcon,
   InformationCircleIcon,
   ChatBubbleLeftRightIcon,
+  ChatBubbleBottomCenterTextIcon,
 } from "@heroicons/react/24/outline";
 import { SITE_NAME } from "client/constants.ts";
 
 const navigation = [
   {
-    name: "Explore",
+    name: "Archive",
     href: "#",
     src: (
-      <MagnifyingGlassIcon
+      <ChatBubbleBottomCenterTextIcon
         className="block h-10 w-10"
         aria-hidden="true"
-        title="Explore"
+        title="Archive"
       />
     ),
     current: false,

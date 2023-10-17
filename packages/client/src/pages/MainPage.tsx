@@ -2,17 +2,16 @@ import React, { useState, useEffect, useRef } from "react";
 import OptionsBar from "./OptionsBar.tsx";
 import "../index.css";
 import TypingText from "../assets/TypingText";
-import leftAvatar from "./left-avatar.jpg";
-import rightAvatar from "./right-avatar.jpg";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import { RouterInput, trpc } from "../utils/trpc";
-import { Router } from "@trpc/server";
 
 export function MainPage() {
   const roleAvatars: { [key: string]: string } | undefined =
     trpc.roleAvatars.useQuery().data;
 
   const bottom = useRef<null | HTMLDivElement>(null);
+  const topicArea = useRef<null | HTMLTextAreaElement>(null);
+
   const [messages, setMessages] = useState<
     { text: string; isRight: boolean; avatarUrl: string }[]
   >([]);
@@ -22,25 +21,39 @@ export function MainPage() {
   const [selectedRoleFor, setSelectedRoleFor] = useState<string>("Debater");
   const [selectedRoleAgainst, setSelectedRoleAgainst] =
     useState<string>("Debater");
+  const [roleFor, setRoleFor] = useState<string>("Debater");
+  const [roleAgainst, setRoleAgainst] = useState<string>("Debater");
+  const [rightAvatarUrl, setRightAvatarUrl] = useState<string>(
+    "/images/default.jpg",
+  );
+  const [leftAvatarUrl, setLeftAvatarUrl] = useState<string>(
+    "/images/default.jpg",
+  );
   const [messageCount, setMessageCount] = useState<number>(2);
   const [currentCount, setCurrentCount] = useState<number>(0);
   const [warningVisible, setWarningVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<number>(0); // 0: not loading, 1: loading debate, 2: waiting for text to display
 
-  let leftAvatarUrl = "/images/default.jpg";
-  let rightAvatarUrl = "/images/default.jpg";
-  if (roleAvatars && selectedRoleAgainst) {
-    leftAvatarUrl =
-      selectedRoleAgainst === "Debater" || !selectedRoleAgainst
-        ? "/images/default.jpg"
-        : `/images/${roleAvatars[selectedRoleAgainst]}`;
-  }
-  if (roleAvatars && selectedRoleFor) {
-    rightAvatarUrl =
-      selectedRoleFor === "Debater" || !selectedRoleFor
-        ? "/images/default.jpg"
-        : `/images/${roleAvatars[selectedRoleFor]}`;
-  }
+  const roles: string[] | undefined = trpc.roles.useQuery().data;
+  const getRandomPlaceholder = trpc.randTopic.useQuery().data;
+  const randomPlaceholder: string | undefined = getRandomPlaceholder;
+
+  useEffect(() => {
+    if (roleAvatars && roleAgainst) {
+      setLeftAvatarUrl(
+        !roles?.includes(roleAgainst)
+          ? "/images/default.jpg"
+          : `/images/${roleAvatars[roleAgainst]}`,
+      );
+    }
+    if (roleAvatars && roleFor) {
+      setRightAvatarUrl(
+        !roles?.includes(roleFor)
+          ? "/images/default.jpg"
+          : `/images/${roleAvatars[roleFor]}`,
+      );
+    }
+  }, [roleAgainst, roleFor, roleAvatars, roles]);
 
   const [debateArgs, setDebateArgs] = useState<
     RouterInput["generateDebateStream"] | null
@@ -63,10 +76,9 @@ export function MainPage() {
       },
     },
   );
-  const randomPlaceholder = trpc.randTopic.useQuery().data;
 
   useEffect(() => {
-    //when the MainPage component is rendered, prevent the screen from scrolling
+    // when the MainPage component is rendered, prevent the screen from scrolling
     document.getElementById("root")!.className = "flex flex-col h-screen";
     return () => {
       document.getElementById("root")!.className = "";
@@ -74,6 +86,7 @@ export function MainPage() {
   }, []);
 
   useEffect(() => {
+    // scroll to bottom while message is displaying
     const scrollInterval = setInterval(() => {
       if (isLoading == 2)
         bottom.current?.scrollIntoView({ behavior: "smooth" }), 25;
@@ -104,6 +117,8 @@ export function MainPage() {
       handleSend(submittedTopic.trim());
       setTopic(submittedTopic.trim());
       setSubmittedTopic("");
+      setRoleFor(selectedRoleFor);
+      setRoleAgainst(selectedRoleAgainst);
       setWarningVisible(false);
     }
   };
@@ -114,6 +129,7 @@ export function MainPage() {
         <div className="flex-grow p-4">
           {/* <TestDebate></TestDebate> */}
           <OptionsBar
+            roles={roles}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             selectedRoleAgainst={selectedRoleAgainst}
@@ -156,7 +172,9 @@ export function MainPage() {
                           msg.isRight && "text-end"
                         } mx-2 text-[#9ca3af]`}
                       >
-                        {msg.isRight ? selectedRoleFor : selectedRoleAgainst}
+                        {msg.isRight
+                          ? roleFor + " (For)"
+                          : roleAgainst + " (Against)"}
                       </span>
                       <div
                         className={`${
@@ -216,8 +234,8 @@ export function MainPage() {
                     } mx-2 text-[#9ca3af]`}
                   >
                     {currentCount % 2 == 0
-                      ? selectedRoleFor
-                      : selectedRoleAgainst}
+                      ? roleFor + " (For)"
+                      : roleAgainst + " (Against)"}
                   </span>
                   <div
                     className={`${
@@ -265,6 +283,7 @@ export function MainPage() {
             className="absolute shadow-lg lg:w-1/2 h-24 w-11/12 m-2 p-2 space-x-2 justify-center rounded-md bottom-0 dark:bg-gray-800 flex"
           >
             <textarea
+              ref={topicArea}
               placeholder={
                 randomPlaceholder ? randomPlaceholder : "Enter Topic Here..."
               }
@@ -273,6 +292,19 @@ export function MainPage() {
               value={submittedTopic}
               onKeyDown={(e) => {
                 if (e.key == "Enter" && !e.shiftKey) handleSubmit(e);
+                addEventListener("keydown", (event) => {
+                  if (
+                    event.key === "Tab" &&
+                    !e.shiftKey &&
+                    !submittedTopic &&
+                    randomPlaceholder
+                  ) {
+                    e.preventDefault();
+                    const placeholder =
+                      topicArea.current?.getAttribute("placeholder");
+                    placeholder && setSubmittedTopic(placeholder);
+                  }
+                });
               }}
               className="resize-none max-w-screen-lg flex-grow box-border bg-transparent dark:text-white"
             ></textarea>
@@ -281,7 +313,9 @@ export function MainPage() {
                 name="Submit"
                 type="submit"
                 disabled={isLoading != 0}
-                className={"bg-sky-700 ml-auto self-end text-white rounded-lg"}
+                className={
+                  "bg-sky-700 ml-auto self-end h-full text-white rounded-lg"
+                }
               >
                 Go!
               </button>
