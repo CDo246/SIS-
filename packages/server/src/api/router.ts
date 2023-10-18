@@ -3,6 +3,7 @@ import { openaiKey } from "../env";
 import { publicProcedure, router } from "./trpc";
 import OpenAI from "openai";
 import { z } from "zod";
+import { observable } from "@trpc/server/observable";
 
 const sideSchema = z.union([z.literal("for"), z.literal("against")]);
 
@@ -20,26 +21,52 @@ type ArgumentParams = z.infer<typeof argumentParamsSchema>;
 
 export const appRouter = router({
   greeting: publicProcedure.query(() => "hello tRPC v10!"),
-  generateDebate: publicProcedure
+
+  generateDebateStream: publicProcedure
     .input(argumentParamsSchema)
-    .mutation(async ({ input }) => {
-      const messages: DebateMessage[] = [];
-      for (let i = 0; i < input.messageCount * 2; i++) {
-        const nextMessage = await generateNextMessage(input, messages);
-        messages.push(nextMessage);
-        console.log(nextMessage.side);
-        console.log("thinking:", nextMessage.thinking);
-        console.log("---------------");
-        console.log(nextMessage.message);
-        console.log();
-      }
-      return messages;
+    .subscription(({ input }) => {
+      return observable<DebateMessage>((emit) => {
+        const run = async () => {
+          const messages: DebateMessage[] = [];
+          for (let i = 0; i < input.messageCount * 2; i++) {
+            const nextMessage = await generateNextMessage(input, messages);
+            emit.next(nextMessage);
+            messages.push(nextMessage);
+            console.log(nextMessage.side);
+            console.log("thinking:", nextMessage.thinking);
+            console.log("---------------");
+            console.log(nextMessage.message);
+            console.log();
+          }
+        };
+        run();
+      });
     }),
+
+  // generateDebate: publicProcedure
+  //   .input(argumentParamsSchema)
+  //   .mutation(async ({ input }) => {
+  //     const messages: DebateMessage[] = [];
+  //     for (let i = 0; i < input.messageCount * 2; i++) {
+  //       const nextMessage = await generateNextMessage(input, messages);
+  //       messages.push(nextMessage);
+  //       console.log(nextMessage.side);
+  //       console.log("thinking:", nextMessage.thinking);
+  //       console.log("---------------");
+  //       console.log(nextMessage.message);
+  //       console.log();
+  //     }
+  //     return messages;
+  //   }),
+
   randTopic: publicProcedure.query(() => {
     return randomTopic();
   }),
   roles: publicProcedure.query(() => {
     return roles;
+  }),
+  roleAvatars: publicProcedure.query(() => {
+    return roleAvatars;
   }),
 });
 
@@ -156,7 +183,26 @@ let roles: Array<string> = [
   //Character From Media (that we may or may not be allowed to use)
   "Super Mario",
   "Yoda",
+  //Custom Personality
+  "Custom...",
 ];
+
+let roleAvatars: { [key: string]: string } = {
+  Philosopher: "philosopher.png",
+  "Angry Drunk": "drunk.png",
+  "Conspiracy Theorist": "theorist.png",
+  Cowboy: "cowboy.png",
+  Pirate: "pirate.png",
+  "Valley Girl": "valley.png",
+  "Shakespearean Bard": "bard.png",
+  "Hyperactive Dog That Can Talk": "dog.png",
+  Mime: "mime.png",
+  "Professional Rapper That Rhymes Everything": "rapper.png",
+  Caveman: "caveman.png",
+  //Character From Media (that we may or may not be allowed to use)
+  "Super Mario": "mario.png",
+  Yoda: "yoda.png",
+};
 
 function randomRole() {
   return roles[Math.floor(Math.random() * roles.length)];

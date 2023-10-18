@@ -3,29 +3,29 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
   XMarkIcon,
-  MagnifyingGlassIcon,
   UserCircleIcon,
   InformationCircleIcon,
   ChatBubbleLeftRightIcon,
+  ChatBubbleBottomCenterTextIcon,
 } from "@heroicons/react/24/outline";
 import { SITE_NAME } from "client/constants.ts";
 
 const navigation = [
   {
-    name: "Explore",
+    name: "Archive",
     href: "#",
     src: (
-      <MagnifyingGlassIcon
+      <ChatBubbleBottomCenterTextIcon
         className="block h-10 w-10"
         aria-hidden="true"
-        title="Explore"
+        title="Archive"
       />
     ),
     current: false,
   },
   {
     name: "About",
-    href: "#",
+    href: "/About",
     src: (
       <InformationCircleIcon
         className="block h-10 w-10"
@@ -88,7 +88,7 @@ export function NavBar() {
                         href={item.href}
                         className={classNames(
                           item.current ? "bg-sky-800 text-white" : "text-black",
-                          "flex items-center rounded-t-md px-3 text-lg font-medium hover:text-blue-700",
+                          "flex items-center rounded-md px-3 text-lg font-medium hover:text-blue-700",
                         )}
                         aria-current={item.current ? "page" : undefined}
                       >
