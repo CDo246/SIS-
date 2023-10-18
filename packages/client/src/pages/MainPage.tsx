@@ -123,7 +123,6 @@ export function MainPage() {
       setRoleFor(selectedRoleFor);
       setRoleAgainst(selectedRoleAgainst);
       setWarningVisible(false);
-      console.log("message count: " + messageCount);
     }
   };
 
