@@ -123,6 +123,7 @@ export function MainPage() {
       setRoleFor(selectedRoleFor);
       setRoleAgainst(selectedRoleAgainst);
       setWarningVisible(false);
+      console.log("message count: " + messageCount);
     }
   };
 
@@ -221,7 +222,7 @@ export function MainPage() {
                       title={currentCount % 2 == 0 ? roleFor : roleAgainst}
                       className={`${
                         currentCount % 2 == 0 ? "ml-2" : "mr-2"
-                      } w-8 h-8 rounded-full`} // Adjust 'ml-2' and 'mr-2' as required for margin purposes
+                      } w-8 lg:w-10 h-8 lg:h-10 rounded-full`} // Adjust 'ml-2' and 'mr-2' as required for margin purposes
                     />
                   </div>
                 }
@@ -275,9 +276,15 @@ export function MainPage() {
               Topic:&nbsp;
             </span>
           ) : (
-            <span className="font-bold" id="TopicSpan">
-              Enter topic below:
-            </span>
+            <div>
+              <span className="font-bold" id="TopicSpan">
+                Enter topic below:
+              </span>
+              <span className="text-[#9ca3af]">
+                {" "}
+                (Tab to autofill with example)
+              </span>
+            </div>
           )}
           {topic}
         </p>
