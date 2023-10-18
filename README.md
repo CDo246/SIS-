@@ -3,6 +3,7 @@
 This project was created during the "Software Innovation Studio" subject at the University of Technology Sydney
 
 With this app, the user is able to input a topic to be debated such as:
+
 - Is pineapple on pizza good?
 - Should vaping be banned?
 
