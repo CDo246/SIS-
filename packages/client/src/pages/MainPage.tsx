@@ -39,14 +39,12 @@ export function MainPage() {
   const randomPlaceholder: string | undefined = getRandomPlaceholder;
 
   useEffect(() => {
-    if (roleAvatars && roleAgainst) {
+    if (roleAvatars) {
       setLeftAvatarUrl(
         !roles?.includes(roleAgainst)
           ? "/images/default.jpg"
           : `/images/${roleAvatars[roleAgainst]}`,
       );
-    }
-    if (roleAvatars && roleFor) {
       setRightAvatarUrl(
         !roles?.includes(roleFor)
           ? "/images/default.jpg"
@@ -269,13 +267,13 @@ export function MainPage() {
           </div> */}
           {/* input for testing purposes */}
         </div>
-        <p className="dark:text-white pb-4 text-center fixed bottom-24 mx-auto inset-x-0">
+        <p className="dark:text-white pb-4 text-center fixed bottom-24 max-w-[900px] max-h-[64px] overflow-y-auto mx-auto inset-x-0">
           {topic ? (
             <span className="font-bold" id="TopicSpan">
               Topic:&nbsp;
             </span>
           ) : (
-            <div>
+            <span>
               <span className="font-bold" id="TopicSpan">
                 Enter topic below:
               </span>
@@ -283,14 +281,14 @@ export function MainPage() {
                 {" "}
                 (Tab to autofill with example)
               </span>
-            </div>
+            </span>
           )}
           {topic}
         </p>
         <div className="flex justify-center h-24 mt-2">
           <form
             onSubmit={handleSubmit}
-            className="absolute shadow-lg lg:w-1/2 h-24 w-11/12 m-2 p-2 space-x-2 justify-center rounded-lg bottom-0 dark:bg-gray-800 flex"
+            className="absolute shadow-lg lg:w-1/2 h-24 w-11/12 m-2 p-2 space-x-2 justify-center rounded-lg bottom-0 dark:bg-gray-800 flex z-50"
           >
             <textarea
               ref={topicArea}
@@ -298,6 +296,7 @@ export function MainPage() {
                 randomPlaceholder ? randomPlaceholder : "Enter topic here..."
               }
               disabled={isLoading != 0}
+              maxLength={128}
               onChange={(e) => setSubmittedTopic(e.target.value)}
               value={submittedTopic}
               onKeyDown={(e) => {
