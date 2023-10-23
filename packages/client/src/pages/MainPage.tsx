@@ -4,7 +4,9 @@ import "../index.css";
 import TypingText from "../assets/TypingText";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import { RouterInput, trpc } from "../utils/trpc";
+import { useLocalStorage } from "react-use";
 
+type MessageData = { text: string; isRight: boolean; avatarUrl: string };
 export function MainPage() {
   const roleAvatars: { [key: string]: string } | undefined =
     trpc.roleAvatars.useQuery().data;
@@ -12,9 +14,10 @@ export function MainPage() {
   const bottom = useRef<null | HTMLDivElement>(null);
   const topicArea = useRef<null | HTMLTextAreaElement>(null);
 
-  const [messages, setMessages] = useState<
-    { text: string; isRight: boolean; avatarUrl: string }[]
-  >([]);
+  const arr1 = [1, 2, 3];
+  const emptyArr = [];
+
+  const [messages, setMessages] = useLocalStorage<MessageData[]>('messages-cache', []);
   const [isOpen, setIsOpen] = useState(false);
   const [topic, setTopic] = useState<string>("");
   const [submittedTopic, setSubmittedTopic] = useState<string>("");
@@ -24,10 +27,10 @@ export function MainPage() {
   const [roleFor, setRoleFor] = useState<string>("Debater");
   const [roleAgainst, setRoleAgainst] = useState<string>("Debater");
   const [rightAvatarUrl, setRightAvatarUrl] = useState<string>(
-    "/images/default.jpg",
+    "/images/default.jpg"
   );
   const [leftAvatarUrl, setLeftAvatarUrl] = useState<string>(
-    "/images/default.jpg",
+    "/images/default.jpg"
   );
   const [messageCount, setMessageCount] = useState<number>(2);
   const [currentCount, setCurrentCount] = useState<number>(0);
@@ -43,14 +46,14 @@ export function MainPage() {
       setLeftAvatarUrl(
         !roles?.includes(roleAgainst)
           ? "/images/default.jpg"
-          : `/images/${roleAvatars[roleAgainst]}`,
+          : `/images/${roleAvatars[roleAgainst]}`
       );
     }
     if (roleAvatars && roleFor) {
       setRightAvatarUrl(
         !roles?.includes(roleFor)
           ? "/images/default.jpg"
-          : `/images/${roleAvatars[roleFor]}`,
+          : `/images/${roleAvatars[roleFor]}`
       );
     }
   }, [roleAgainst, roleFor, roleAvatars, roles]);
@@ -74,7 +77,7 @@ export function MainPage() {
           ];
         });
       },
-    },
+    }
   );
 
   useEffect(() => {
@@ -111,7 +114,7 @@ export function MainPage() {
   const handleSubmit = (
     e:
       | React.KeyboardEvent<HTMLTextAreaElement>
-      | React.FormEvent<HTMLFormElement>,
+      | React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
     if (submittedTopic) {
@@ -196,7 +199,7 @@ export function MainPage() {
                       </div>
                     </div>
                   </div>
-                ),
+                )
             )}
             {isLoading == 1 && (
               // Loading text bubbles
