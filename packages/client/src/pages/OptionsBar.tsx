@@ -132,7 +132,7 @@ export default function OptionsBar(props: {
                 htmlFor="Message Count"
                 title="Number of messages per debater"
               >
-                Message Count:
+                Message Count (1-4):
               </label>
               <input
                 onChange={(e) => {
@@ -142,6 +142,12 @@ export default function OptionsBar(props: {
                   )
                     props.setMessageCount(e.target.valueAsNumber);
                   props.setWarningVisible(true);
+                }}
+                onBlur={(e) => {
+                  let inputValue = e.target.valueAsNumber;
+                  inputValue = Math.max(1, Math.min(4, inputValue));
+                  e.target.valueAsNumber = inputValue;
+                  props.setMessageCount(inputValue);
                 }}
                 type="number"
                 id="messageCount"
