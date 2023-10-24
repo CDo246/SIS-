@@ -4,7 +4,9 @@ import "../index.css";
 import TypingText from "../assets/TypingText";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import { RouterInput, trpc } from "../utils/trpc";
+import { useLocalStorage } from "react-use";
 
+type MessageData = { text: string; isRight: boolean; avatarUrl: string };
 export function MainPage() {
   const roleAvatars: { [key: string]: string } | undefined =
     trpc.roleAvatars.useQuery().data;
@@ -12,9 +14,13 @@ export function MainPage() {
   const bottom = useRef<null | HTMLDivElement>(null);
   const topicArea = useRef<null | HTMLTextAreaElement>(null);
 
-  const [messages, setMessages] = useState<
-    { text: string; isRight: boolean; avatarUrl: string }[]
-  >([]);
+  const arr1 = [1, 2, 3];
+  const emptyArr = [];
+
+  const [messages, setMessages] = useLocalStorage<MessageData[]>(
+    "messages-cache",
+    [],
+  );
   const [isOpen, setIsOpen] = useState(false);
   const [topic, setTopic] = useState<string>("");
   const [submittedTopic, setSubmittedTopic] = useState<string>("");
