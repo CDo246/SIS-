@@ -57,6 +57,7 @@ export function MainPage() {
     RouterInput["generateDebateStream"] | null
   >(null);
   trpc.generateDebateStream.useSubscription(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     debateArgs != null ? debateArgs : (null as any),
     {
       enabled: debateArgs != null,
