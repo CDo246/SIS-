@@ -14,13 +14,11 @@ export function MainPage() {
   const bottom = useRef<null | HTMLDivElement>(null);
   const topicArea = useRef<null | HTMLTextAreaElement>(null);
 
-  const arr1 = [1, 2, 3];
-  const emptyArr = [];
-
-  const [messages, setMessages] = useLocalStorage<MessageData[]>(
-    "messages-cache",
-    [],
-  );
+  const [messages, setMessages] = useState<MessageData[]>([])
+  // const [messages, setMessages] = useLocalStorage<MessageData[]>(
+  //   "messages-cache",
+  //   [],
+  // );
   const [isOpen, setIsOpen] = useState(false);
   const [topic, setTopic] = useState<string>("");
   const [submittedTopic, setSubmittedTopic] = useState<string>("");
