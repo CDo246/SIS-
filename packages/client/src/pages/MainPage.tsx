@@ -14,7 +14,7 @@ export function MainPage() {
   const bottom = useRef<null | HTMLDivElement>(null);
   const topicArea = useRef<null | HTMLTextAreaElement>(null);
 
-  const [messages, setMessages] = useState<MessageData[]>([])
+  const [messages, setMessages] = useState<MessageData[]>([]);
   // const [messages, setMessages] = useLocalStorage<MessageData[]>(
   //   "messages-cache",
   //   [],
