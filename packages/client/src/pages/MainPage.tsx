@@ -53,6 +53,27 @@ export function MainPage() {
     }
   }, [roleAgainst, roleFor, roleAvatars, roles]);
 
+  // Autofill function
+  useEffect(() => {
+    function handleAutofill(event: KeyboardEvent) {
+      if (
+        document.activeElement === topicArea.current &&
+        event.key === "Tab" &&
+        !event.shiftKey &&
+        !submittedTopic &&
+        randomPlaceholder
+      ) {
+        event.preventDefault();
+        const placeholder = topicArea.current?.getAttribute("placeholder");
+        placeholder && setSubmittedTopic(placeholder);
+      }
+    }
+    addEventListener("keydown", handleAutofill);
+    return () => {
+      removeEventListener("keydown", handleAutofill);
+    };
+  });
+
   const [debateArgs, setDebateArgs] = useState<
     RouterInput["generateDebateStream"] | null
   >(null);
@@ -302,19 +323,6 @@ export function MainPage() {
               value={submittedTopic}
               onKeyDown={(e) => {
                 if (e.key == "Enter" && !e.shiftKey) handleSubmit(e);
-                addEventListener("keydown", (event) => {
-                  if (
-                    event.key === "Tab" &&
-                    !e.shiftKey &&
-                    !submittedTopic &&
-                    randomPlaceholder
-                  ) {
-                    e.preventDefault();
-                    const placeholder =
-                      topicArea.current?.getAttribute("placeholder");
-                    placeholder && setSubmittedTopic(placeholder);
-                  }
-                });
               }}
               className="resize-none max-w-screen-lg flex-grow box-border bg-transparent dark:text-white"
             ></textarea>
