@@ -180,8 +180,6 @@ export function MainPage() {
                       <br></br>
                       <img
                         src={msg.isRight ? rightAvatarUrl : leftAvatarUrl}
-                        alt="Profile Picture"
-                        title={msg.isRight ? roleFor : roleAgainst}
                         className={`${
                           msg.isRight ? "ml-2" : "mr-2"
                         } w-8 lg:w-10 h-8 lg:h-10 rounded-full`} // Adjust 'ml-2' and 'mr-2' as required for margin purposes
@@ -237,8 +235,6 @@ export function MainPage() {
                       src={
                         currentCount % 2 == 0 ? rightAvatarUrl : leftAvatarUrl
                       }
-                      alt="Profile Picture"
-                      title={currentCount % 2 == 0 ? roleFor : roleAgainst}
                       className={`${
                         currentCount % 2 == 0 ? "ml-2" : "mr-2"
                       } w-8 lg:w-10 h-8 lg:h-10 rounded-full`} // Adjust 'ml-2' and 'mr-2' as required for margin purposes
