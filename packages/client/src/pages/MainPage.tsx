@@ -43,14 +43,12 @@ export function MainPage() {
   const randomPlaceholder: string | undefined = getRandomPlaceholder;
 
   useEffect(() => {
-    if (roleAvatars && roleAgainst) {
+    if (roleAvatars) {
       setLeftAvatarUrl(
         !roles?.includes(roleAgainst)
           ? "/images/default.jpg"
           : `/images/${roleAvatars[roleAgainst]}`,
       );
-    }
-    if (roleAvatars && roleFor) {
       setRightAvatarUrl(
         !roles?.includes(roleFor)
           ? "/images/default.jpg"
@@ -59,10 +57,25 @@ export function MainPage() {
     }
   }, [roleAgainst, roleFor, roleAvatars, roles]);
 
+  function handleAutofill(event: React.KeyboardEvent) {
+    if (
+      document.activeElement === topicArea.current &&
+      event.key === "Tab" &&
+      !event.shiftKey &&
+      !submittedTopic &&
+      randomPlaceholder
+    ) {
+      event.preventDefault();
+      const placeholder = topicArea.current?.getAttribute("placeholder");
+      placeholder && setSubmittedTopic(placeholder);
+    }
+  }
+
   const [debateArgs, setDebateArgs] = useState<
     RouterInput["generateDebateStream"] | null
   >(null);
   trpc.generateDebateStream.useSubscription(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     debateArgs != null ? debateArgs : (null as any),
     {
       enabled: debateArgs != null,
@@ -164,8 +177,6 @@ export function MainPage() {
                       <br></br>
                       <img
                         src={msg.isRight ? rightAvatarUrl : leftAvatarUrl}
-                        alt="Profile Picture"
-                        title={msg.isRight ? roleFor : roleAgainst}
                         className={`${
                           msg.isRight ? "ml-2" : "mr-2"
                         } w-8 lg:w-10 h-8 lg:h-10 rounded-full`} // Adjust 'ml-2' and 'mr-2' as required for margin purposes
@@ -221,8 +232,6 @@ export function MainPage() {
                       src={
                         currentCount % 2 == 0 ? rightAvatarUrl : leftAvatarUrl
                       }
-                      alt="Profile Picture"
-                      title={currentCount % 2 == 0 ? roleFor : roleAgainst}
                       className={`${
                         currentCount % 2 == 0 ? "ml-2" : "mr-2"
                       } w-8 lg:w-10 h-8 lg:h-10 rounded-full`} // Adjust 'ml-2' and 'mr-2' as required for margin purposes
@@ -273,13 +282,13 @@ export function MainPage() {
           </div> */}
           {/* input for testing purposes */}
         </div>
-        <p className="dark:text-white pb-4 text-center fixed bottom-24 mx-auto inset-x-0">
+        <p className="dark:text-white pb-4 text-center fixed bottom-24 max-w-[900px] max-h-[64px] overflow-y-auto mx-auto inset-x-0">
           {topic ? (
             <span className="font-bold" id="TopicSpan">
               Topic:&nbsp;
             </span>
           ) : (
-            <div>
+            <span>
               <span className="font-bold" id="TopicSpan">
                 Enter topic below:
               </span>
@@ -287,14 +296,14 @@ export function MainPage() {
                 {" "}
                 (Tab to autofill with example)
               </span>
-            </div>
+            </span>
           )}
           {topic}
         </p>
         <div className="flex justify-center h-24 mt-2">
           <form
             onSubmit={handleSubmit}
-            className="absolute shadow-lg lg:w-1/2 h-24 w-11/12 m-2 p-2 space-x-2 justify-center rounded-lg bottom-0 dark:bg-gray-800 flex"
+            className="absolute shadow-lg lg:w-1/2 h-24 w-11/12 m-2 p-2 space-x-2 justify-center rounded-lg bottom-0 dark:bg-gray-800 flex z-50"
           >
             <textarea
               ref={topicArea}
@@ -302,23 +311,12 @@ export function MainPage() {
                 randomPlaceholder ? randomPlaceholder : "Enter topic here..."
               }
               disabled={isLoading != 0}
+              maxLength={128}
               onChange={(e) => setSubmittedTopic(e.target.value)}
               value={submittedTopic}
               onKeyDown={(e) => {
+                handleAutofill(e);
                 if (e.key == "Enter" && !e.shiftKey) handleSubmit(e);
-                addEventListener("keydown", (event) => {
-                  if (
-                    event.key === "Tab" &&
-                    !e.shiftKey &&
-                    !submittedTopic &&
-                    randomPlaceholder
-                  ) {
-                    e.preventDefault();
-                    const placeholder =
-                      topicArea.current?.getAttribute("placeholder");
-                    placeholder && setSubmittedTopic(placeholder);
-                  }
-                });
               }}
               className="resize-none max-w-screen-lg flex-grow box-border bg-transparent dark:text-white"
             ></textarea>

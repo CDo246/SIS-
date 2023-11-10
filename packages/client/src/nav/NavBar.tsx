@@ -72,7 +72,7 @@ export function NavBar() {
               <div className="flex flex-1 justify-center sm:items-center">
                 {/* Logo and links */}
                 <a
-                  className="flex text-blue-700 flex-shrink-0 items-center sm:mr-auto"
+                  className="flex text-blue-700 flex-shrink-0 items-center rounded-md sm:mr-auto"
                   href="/"
                 >
                   <div className="flex flex-shrink-0 items-center sm:mr-auto">
